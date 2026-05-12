@@ -39,7 +39,7 @@ export default async function AdminCustomersPage() {
                   </td>
                 </tr>
               ) : (
-                customers.map((customer) => (
+                customers.map((customer: (typeof customers)[number]) => (
                   <tr key={customer.id} className="hover:bg-[#1a1a1a] transition-colors">
                     <td className="px-5 py-3">
                       <div className="flex items-center gap-3">
