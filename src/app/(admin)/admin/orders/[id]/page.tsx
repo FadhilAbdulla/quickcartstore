@@ -68,7 +68,7 @@ export default async function AdminOrderDetailPage({
           <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-6">
             <h2 className="text-white font-semibold mb-5">Items</h2>
             <div className="space-y-4">
-              {order.items.map((item) => (
+              {order.items.map((item: (typeof order.items)[number]) => (
                 <div key={item.id} className="flex gap-4">
                   <div className="w-16 h-16 rounded-xl bg-[#0f0f0f] flex items-center justify-center shrink-0">
                     {item.product.images[0] ? (
