@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "opennextjs-cloudflare build",
+    "postbuild": "node scripts/fix-pg-cloudflare.js",
     "start": "next start",
     "lint": "eslint",
     "db:push": "prisma db push",
