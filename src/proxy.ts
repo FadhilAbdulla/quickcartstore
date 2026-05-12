@@ -7,7 +7,7 @@ const { auth } = NextAuth(authConfig)
 export default auth((req) => {
   const { nextUrl, auth: session } = req
   const isLoggedIn = !!session
-  const isAdmin = (session?.user as any)?.role === "ADMIN"
+  const isAdmin = session?.user?.role === "ADMIN"
 
   const isAdminRoute = nextUrl.pathname.startsWith("/admin")
   const isAuthRoute = nextUrl.pathname.startsWith("/auth")

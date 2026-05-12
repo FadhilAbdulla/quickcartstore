@@ -112,7 +112,7 @@ export function Navbar({ session }: NavbarProps) {
               {/* User */}
               {session?.user ? (
                 <div className="flex items-center gap-1.5">
-                  {(session.user as any).role === "ADMIN" && (
+                  {session.user.role === "ADMIN" && (
                     <Link href="/admin" className="hidden sm:block">
                       <Button variant="outline" size="sm" className="text-xs h-8">Admin</Button>
                     </Link>
@@ -177,7 +177,7 @@ export function Navbar({ session }: NavbarProps) {
             <div className="pt-2 border-t border-[#1a1a1a] mt-2 space-y-1">
               {session?.user ? (
                 <>
-                  {(session.user as any).role === "ADMIN" && (
+                  {session.user.role === "ADMIN" && (
                     <Link href="/admin" className="block px-3 py-2.5 rounded-lg text-sm text-blue-400 hover:bg-[#1a1a1a] transition-colors">Admin Panel</Link>
                   )}
                   <Link href="/account" className="block px-3 py-2.5 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors">My Account</Link>

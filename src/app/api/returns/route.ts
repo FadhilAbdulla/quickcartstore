@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const order = await db.order.findUnique({ where: { id: orderId } })
-    if (!order || order.userId !== (session.user as any).id) {
+    if (!order || order.userId !== session.user.id) {
       return NextResponse.json({ error: "Order not found" }, { status: 404 })
     }
     if (order.status !== "DELIVERED") {
@@ -24,7 +24,7 @@ export async function POST(req: Request) {
     const ret = await db.return.create({
       data: {
         orderId,
-        userId: (session.user as any).id,
+        userId: session.user.id,
         productId,
         reason,
         quantity,

@@ -97,7 +97,7 @@ export default async function AdminOrdersPage({
                   </td>
                 </tr>
               ) : (
-                orders.map((order) => (
+                orders.map((order: (typeof orders)[number]) => (
                   <tr key={order.id} className="hover:bg-[#1a1a1a] transition-colors">
                     <td className="px-5 py-3">
                       <Link

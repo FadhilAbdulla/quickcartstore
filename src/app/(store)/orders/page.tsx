@@ -22,7 +22,7 @@ export default async function OrdersPage() {
   if (!session?.user) redirect("/auth/signin")
 
   const orders = await db.order.findMany({
-    where: { userId: (session.user as any).id },
+    where: { userId: session.user.id },
     include: { items: { include: { product: { include: { brand: true } } } } },
     orderBy: { createdAt: "desc" },
   })

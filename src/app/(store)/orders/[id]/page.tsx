@@ -37,7 +37,7 @@ export default async function OrderDetailPage({
     },
   })
 
-  if (!order || order.userId !== (session.user as any).id) notFound()
+  if (!order || order.userId !== session.user.id) notFound()
 
   const currentStep = statusSteps.indexOf(order.status)
   const isCancelled = order.status === "CANCELLED"

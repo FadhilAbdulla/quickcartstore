@@ -12,7 +12,7 @@ export default async function AccountPage() {
   const session = await auth()
   if (!session?.user) redirect("/auth/signin")
 
-  const userId = (session.user as any).id
+  const userId = session.user.id
   const user = await db.user.findUnique({
     where: { id: userId },
     select: { id: true, name: true, email: true, phone: true, role: true, createdAt: true },

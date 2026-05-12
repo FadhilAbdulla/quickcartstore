@@ -9,7 +9,7 @@ export async function GET() {
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const orders = await db.order.findMany({
-      where: { userId: (session.user as any).id },
+      where: { userId: session.user.id },
       include: { items: { include: { product: true } }, address: true },
       orderBy: { createdAt: "desc" },
     })
@@ -31,7 +31,7 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "Address and items are required" }, { status: 400 })
     }
 
-    const userId = (session.user as any).id
+    const userId = session.user.id
 
     const createdAddress = await db.address.create({
       data: { ...address, userId },

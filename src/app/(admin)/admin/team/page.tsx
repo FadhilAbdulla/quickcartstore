@@ -6,7 +6,7 @@ import { TeamManager } from "@/components/admin/team-manager"
 
 export default async function AdminTeamPage() {
   const session = await auth()
-  const currentUserId = (session!.user as any).id
+  const currentUserId = session!.user.id
 
   const team = await db.user.findMany({
     where: { role: "ADMIN" },
