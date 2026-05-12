@@ -1,7 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
-import type { Prisma, OrderStatus } from "@prisma/client"
+import type { OrderStatus } from "@prisma/client"
 import { formatPrice } from "@/lib/utils"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
@@ -22,18 +22,17 @@ export default async function AdminOrdersPage({
   searchParams: Promise<{ status?: string; search?: string }>
 }) {
   const params = await searchParams
-  const where: Prisma.OrderWhereInput = {}
-  if (params.status) where.status = params.status as OrderStatus
-  if (params.search) {
-    where.OR = [
-      { orderNumber: { contains: params.search, mode: "insensitive" } },
-      { user: { name: { contains: params.search, mode: "insensitive" } } },
-      { user: { email: { contains: params.search, mode: "insensitive" } } },
-    ]
-  }
-
   const orders = await db.order.findMany({
-    where,
+    where: {
+      ...(params.status && { status: params.status as OrderStatus }),
+      ...(params.search && {
+        OR: [
+          { orderNumber: { contains: params.search, mode: "insensitive" } },
+          { user: { name: { contains: params.search, mode: "insensitive" } } },
+          { user: { email: { contains: params.search, mode: "insensitive" } } },
+        ],
+      }),
+    },
     include: { user: true, items: true, address: true },
     orderBy: { createdAt: "desc" },
   })
