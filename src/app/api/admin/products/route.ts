@@ -38,8 +38,8 @@ export async function POST(req: Request) {
     })
 
     return NextResponse.json(product, { status: 201 })
-  } catch (e: any) {
-    if (e?.code === "P2002") {
+  } catch (e: unknown) {
+    if (e && typeof e === "object" && "code" in e && e.code === "P2002") {
       return NextResponse.json({ error: "SKU or slug already in use" }, { status: 409 })
     }
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })

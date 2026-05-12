@@ -25,7 +25,12 @@ export async function POST(req: Request) {
     const session = await auth()
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
-    const { address, items, totalAmount, promoCodeId } = await req.json()
+    const { address, items, totalAmount, promoCodeId }: {
+      address: { name: string; phone: string; line1: string; line2?: string; city: string; emirate: string; country?: string }
+      items: { productId: string; quantity: number; price: number }[]
+      totalAmount: number
+      promoCodeId?: string
+    } = await req.json()
 
     if (!address || !items?.length) {
       return NextResponse.json({ error: "Address and items are required" }, { status: 400 })
@@ -44,7 +49,7 @@ export async function POST(req: Request) {
         addressId: createdAddress.id,
         totalAmount,
         items: {
-          create: items.map((item: any) => ({
+          create: items.map((item) => ({
             productId: item.productId,
             quantity: item.quantity,
             price: item.price,

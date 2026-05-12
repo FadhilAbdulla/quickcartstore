@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
+import type { Prisma, ReturnStatus } from "@prisma/client"
 import { formatPrice } from "@/lib/utils"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
@@ -19,8 +20,8 @@ export default async function AdminReturnsPage({
   searchParams: Promise<{ status?: string }>
 }) {
   const params = await searchParams
-  const where: any = {}
-  if (params.status) where.status = params.status
+  const where: Prisma.ReturnWhereInput = {}
+  if (params.status) where.status = params.status as ReturnStatus
 
   const returns = await db.return.findMany({
     where,

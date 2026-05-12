@@ -1,6 +1,7 @@
 export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
+import type { Prisma } from "@prisma/client"
 import { formatPrice } from "@/lib/utils"
 import Link from "next/link"
 import {
@@ -168,7 +169,7 @@ export default async function AdminDashboard() {
             {stats.recentOrders.length === 0 ? (
               <p className="p-5 text-gray-500 text-sm">No orders yet</p>
             ) : (
-              stats.recentOrders.map((order) => (
+              stats.recentOrders.map((order: Prisma.OrderGetPayload<{ include: { user: true; items: true } }>) => (
                 <Link
                   key={order.id}
                   href={`/admin/orders/${order.id}`}
