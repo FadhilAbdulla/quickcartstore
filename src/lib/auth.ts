@@ -5,6 +5,7 @@ import bcrypt from "bcryptjs"
 import { db } from "@/lib/db"
 import { authConfig } from "@/lib/auth.config"
 
+// This file is used to configure NextAuth for authentication in the application.
 export const { handlers, auth, signIn, signOut } = NextAuth({
   ...authConfig,
   adapter: PrismaAdapter(db),
