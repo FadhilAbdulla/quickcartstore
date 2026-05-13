@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     if (!session?.user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 })
 
     const { address, items, totalAmount, promoCodeId }: {
-      address: { name: string; phone: string; line1: string; line2?: string; city: string; emirate: string; country?: string }
+      address: { name: string; phone: string; line1: string; line2?: string; city: string; emirate: string; country?: string; notes?: string }
       items: { productId: string; quantity: number; price: number }[]
       totalAmount: number
       promoCodeId?: string
@@ -38,8 +38,10 @@ export async function POST(req: Request) {
 
     const userId = session.user.id
 
+    const { notes: orderNotes, ...addressData } = address
+
     const createdAddress = await db.address.create({
-      data: { ...address, userId },
+      data: { ...addressData, userId },
     })
 
     const order = await db.order.create({
@@ -48,6 +50,7 @@ export async function POST(req: Request) {
         userId,
         addressId: createdAddress.id,
         totalAmount,
+        notes: orderNotes ?? null,
         items: {
           create: items.map((item) => ({
             productId: item.productId,
@@ -73,7 +76,8 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json(order, { status: 201 })
-  } catch {
+  } catch (e) {
+    console.error("POST /api/orders error:", e)
     return NextResponse.json({ error: "Internal server error" }, { status: 500 })
   }
 }

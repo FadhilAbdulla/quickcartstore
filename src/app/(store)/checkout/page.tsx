@@ -32,16 +32,26 @@ export default function CheckoutPage() {
   const [promoLoading, setPromoLoading] = useState(false)
   const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null)
   const [form, setForm] = useState({ name: "", phone: "", line1: "", line2: "", city: "", emirate: "", notes: "" })
+  const [vatRate, setVatRate] = useState(5)
+  const [processingRate, setProcessingRate] = useState(0)
 
   useEffect(() => {
     if (session?.user) setForm((f) => ({ ...f, name: session.user?.name || "" }))
   }, [session])
 
+  useEffect(() => {
+    fetch("/api/settings/charges")
+      .then((r) => r.json())
+      .then((d) => { setVatRate(d.vatRate); setProcessingRate(d.processingRate) })
+      .catch(() => {})
+  }, [])
+
   const subtotal = totalPrice()
   const promoDiscount = appliedPromo?.discount ?? 0
   const afterDiscount = Math.max(0, subtotal - promoDiscount)
-  const vat = afterDiscount * 0.05
-  const grandTotal = afterDiscount + vat
+  const vat = afterDiscount * (vatRate / 100)
+  const processingFee = afterDiscount * (processingRate / 100)
+  const grandTotal = afterDiscount + vat + processingFee
 
   const applyPromo = async () => {
     if (!promoInput.trim()) return
@@ -233,9 +243,16 @@ export default function CheckoutPage() {
                     <span>-{formatPrice(appliedPromo.discount)}</span>
                   </div>
                 )}
-                <div className="flex justify-between text-gray-400">
-                  <span>VAT (5%)</span><span>{formatPrice(vat)}</span>
-                </div>
+                {vatRate > 0 && (
+                  <div className="flex justify-between text-gray-400">
+                    <span>VAT ({vatRate}%)</span><span>{formatPrice(vat)}</span>
+                  </div>
+                )}
+                {processingRate > 0 && (
+                  <div className="flex justify-between text-gray-400">
+                    <span>Processing ({processingRate}%)</span><span>{formatPrice(processingFee)}</span>
+                  </div>
+                )}
                 <div className="flex justify-between text-gray-400">
                   <span>Shipping</span><span className="text-green-400">Free</span>
                 </div>
