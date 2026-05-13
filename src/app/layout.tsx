@@ -4,7 +4,7 @@ import type { Metadata } from "next"
 import { Geist, Geist_Mono } from "next/font/google"
 import "./globals.css"
 import { Toaster } from "sonner"
-import NextTopLoader from "nextjs-toploader"
+import { TopLoader } from "@/components/top-loader"
 import { db } from "@/lib/db"
 
 const geistSans = Geist({
@@ -38,7 +38,7 @@ export default async function RootLayout({
   return (
     <html lang="en" data-theme={theme} className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
-        <NextTopLoader color={theme === "light" ? "#2563eb" : "#ffffff"} height={2} showSpinner={false} />
+        <TopLoader color={theme === "light" ? "#2563eb" : "#ffffff"} height={2} />
         {children}
         <Toaster
           theme={theme as "dark" | "light"}
