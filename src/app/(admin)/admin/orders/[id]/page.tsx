@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Package, MapPin } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import { Badge } from "@/components/ui/badge"
 import { OrderStatusUpdate } from "@/components/admin/order-status-update"
 
@@ -23,14 +24,17 @@ export default async function AdminOrderDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const order = await db.order.findUnique({
-    where: { id },
-    include: {
-      user: true,
-      items: { include: { product: { include: { brand: true } } } },
-      address: true,
-    },
-  })
+  const [order, currency] = await Promise.all([
+    db.order.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        items: { include: { product: { include: { brand: true } } } },
+        address: true,
+      },
+    }),
+    getCurrency(),
+  ])
 
   if (!order) notFound()
 
@@ -85,11 +89,11 @@ export default async function AdminOrderDetailPage({
                     <p className="text-xs text-blue-400">{item.product.brand.name}</p>
                     <p className="text-white text-sm font-medium">{item.product.name}</p>
                     <p className="text-gray-500 text-xs">
-                      {formatPrice(Number(item.price))} × {item.quantity}
+                      {formatPrice(Number(item.price), currency)} × {item.quantity}
                     </p>
                   </div>
                   <p className="text-white font-semibold shrink-0">
-                    {formatPrice(Number(item.price) * item.quantity)}
+                    {formatPrice(Number(item.price) * item.quantity, currency)}
                   </p>
                 </div>
               ))}
@@ -97,11 +101,11 @@ export default async function AdminOrderDetailPage({
             <div className="border-t border-[#1e1e1e] mt-5 pt-4 space-y-2 text-sm">
               <div className="flex justify-between text-gray-400">
                 <span>Subtotal</span>
-                <span>{formatPrice(Number(order.totalAmount) / 1.05)}</span>
+                <span>{formatPrice(Number(order.totalAmount) / 1.05, currency)}</span>
               </div>
               <div className="flex justify-between text-gray-400">
                 <span>VAT (5%)</span>
-                <span>{formatPrice(Number(order.totalAmount) - Number(order.totalAmount) / 1.05)}</span>
+                <span>{formatPrice(Number(order.totalAmount) - Number(order.totalAmount) / 1.05, currency)}</span>
               </div>
               <div className="flex justify-between text-gray-400">
                 <span>Shipping</span>
@@ -109,7 +113,7 @@ export default async function AdminOrderDetailPage({
               </div>
               <div className="flex justify-between text-white font-bold text-base border-t border-[#1e1e1e] pt-2">
                 <span>Total</span>
-                <span>{formatPrice(Number(order.totalAmount))}</span>
+                <span>{formatPrice(Number(order.totalAmount), currency)}</span>
               </div>
             </div>
           </div>

@@ -5,6 +5,7 @@ import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
 import Link from "next/link"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import { Badge } from "@/components/ui/badge"
 import { Package } from "lucide-react"
 
@@ -21,11 +22,14 @@ export default async function OrdersPage() {
   const session = await auth()
   if (!session?.user) redirect("/auth/signin")
 
-  const orders = await db.order.findMany({
-    where: { userId: session.user.id },
-    include: { items: { include: { product: { include: { brand: true } } } } },
-    orderBy: { createdAt: "desc" },
-  })
+  const [orders, currency] = await Promise.all([
+    db.order.findMany({
+      where: { userId: session.user.id },
+      include: { items: { include: { product: { include: { brand: true } } } } },
+      orderBy: { createdAt: "desc" },
+    }),
+    getCurrency(),
+  ])
 
   return (
     <div className="min-h-screen py-10">
@@ -43,7 +47,7 @@ export default async function OrdersPage() {
               href="/products"
               className="bg-blue-600 hover:bg-blue-500 text-white px-6 py-3 rounded-lg transition-colors"
             >
-              Browse Laptops
+              Browse Products
             </Link>
           </div>
         ) : (
@@ -80,7 +84,7 @@ export default async function OrdersPage() {
                   </div>
                   <div className="text-right shrink-0">
                     <p className="text-white font-semibold text-lg">
-                      {formatPrice(Number(order.totalAmount))}
+                      {formatPrice(Number(order.totalAmount), currency)}
                     </p>
                     <p className="text-blue-400 text-sm mt-1">View details →</p>
                   </div>

@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import type { OrderStatus } from "@prisma/client"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { ShoppingBag } from "lucide-react"
@@ -22,7 +23,8 @@ export default async function AdminOrdersPage({
   searchParams: Promise<{ status?: string; search?: string }>
 }) {
   const params = await searchParams
-  const orders = await db.order.findMany({
+  const [orders, currency] = await Promise.all([
+    db.order.findMany({
     where: {
       ...(params.status && { status: params.status as OrderStatus }),
       ...(params.search && {
@@ -33,9 +35,11 @@ export default async function AdminOrdersPage({
         ],
       }),
     },
-    include: { user: true, items: true, address: true },
-    orderBy: { createdAt: "desc" },
-  })
+      include: { user: true, items: true, address: true },
+      orderBy: { createdAt: "desc" },
+    }),
+    getCurrency(),
+  ])
 
   const statuses = ["PENDING", "CONFIRMED", "PROCESSING", "SHIPPED", "DELIVERED", "CANCELLED"]
 
@@ -113,7 +117,7 @@ export default async function AdminOrdersPage({
                     </td>
                     <td className="px-4 py-3 text-gray-400">{order.items.length}</td>
                     <td className="px-4 py-3 text-white font-medium">
-                      {formatPrice(Number(order.totalAmount))}
+                      {formatPrice(Number(order.totalAmount), currency)}
                     </td>
                     <td className="px-4 py-3 text-gray-400">{order.address?.emirate}</td>
                     <td className="px-4 py-3">

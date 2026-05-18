@@ -5,8 +5,10 @@ import { ShoppingCart, Minus, Plus, Trash2, ArrowRight, ArrowLeft } from "lucide
 import { useCartStore } from "@/store/cart"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 
 export default function CartPage() {
+  const currency = useCurrency()
   const { items, removeItem, updateQuantity, totalPrice, clearCart } = useCartStore()
   const total = totalPrice()
   const vat = total * 0.05
@@ -33,11 +35,11 @@ export default function CartPage() {
               <ShoppingCart className="h-10 w-10 text-gray-600" />
             </div>
             <h2 className="text-2xl font-semibold text-white mb-2">Your cart is empty</h2>
-            <p className="text-gray-500 mb-8">Add some laptops to get started</p>
+            <p className="text-gray-500 mb-8">Add some products to get started</p>
             <Button asChild size="lg">
               <Link href="/products">
                 <ArrowLeft className="h-4 w-4" />
-                Browse Laptops
+                Browse Products
               </Link>
             </Button>
           </div>
@@ -67,7 +69,7 @@ export default function CartPage() {
                   <div className="flex-1 min-w-0">
                     <p className="text-blue-400 text-xs font-medium mb-0.5">{item.product.brand}</p>
                     <h3 className="text-white font-medium leading-tight">{item.product.name}</h3>
-                    <p className="text-blue-400 font-semibold mt-1">{formatPrice(item.product.price)}</p>
+                    <p className="text-blue-400 font-semibold mt-1">{formatPrice(item.product.price, currency)}</p>
 
                     <div className="flex items-center justify-between mt-3">
                       <div className="flex items-center gap-3 border border-[#2a2a2a] rounded-lg px-1">
@@ -92,7 +94,7 @@ export default function CartPage() {
                       </div>
                       <div className="flex items-center gap-4">
                         <span className="text-white font-semibold">
-                          {formatPrice(item.product.price * item.quantity)}
+                          {formatPrice(item.product.price * item.quantity, currency)}
                         </span>
                         <button
                           onClick={() => removeItem(item.product.id)}
@@ -123,11 +125,11 @@ export default function CartPage() {
                 <div className="space-y-3 text-sm">
                   <div className="flex justify-between text-gray-400">
                     <span>Subtotal ({items.length} items)</span>
-                    <span>{formatPrice(total)}</span>
+                    <span>{formatPrice(total, currency)}</span>
                   </div>
                   <div className="flex justify-between text-gray-400">
                     <span>VAT (5%)</span>
-                    <span>{formatPrice(vat)}</span>
+                    <span>{formatPrice(vat, currency)}</span>
                   </div>
                   <div className="flex justify-between text-gray-400">
                     <span>Shipping</span>
@@ -135,7 +137,7 @@ export default function CartPage() {
                   </div>
                   <div className="border-t border-[#1e1e1e] pt-3 flex justify-between text-white font-semibold text-base">
                     <span>Total</span>
-                    <span>{formatPrice(grandTotal)}</span>
+                    <span>{formatPrice(grandTotal, currency)}</span>
                   </div>
                 </div>
 

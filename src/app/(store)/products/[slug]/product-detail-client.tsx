@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { ProductCard } from "@/components/store/product-card"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 import { toast } from "sonner"
 
 interface Product {
@@ -32,6 +33,7 @@ interface ProductDetailClientProps {
 }
 
 export function ProductDetailClient({ product, related }: ProductDetailClientProps) {
+  const currency = useCurrency()
   const [selectedImage, setSelectedImage] = useState(0)
   const [quantity, setQuantity] = useState(1)
   const [added, setAdded] = useState(false)
@@ -61,12 +63,12 @@ export function ProductDetailClient({ product, related }: ProductDetailClientPro
 
   return (
     <div className="min-h-screen py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
         <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <ChevronRight className="h-3.5 w-3.5" />
-          <Link href="/products" className="hover:text-white transition-colors">Laptops</Link>
+          <Link href="/products" className="hover:text-white transition-colors">Products</Link>
           <ChevronRight className="h-3.5 w-3.5" />
           <Link href={`/products?brand=${product.brand.name.toLowerCase()}`} className="hover:text-white transition-colors">
             {product.brand.name}
@@ -128,11 +130,11 @@ export function ProductDetailClient({ product, related }: ProductDetailClientPro
 
             {/* Price */}
             <div className="flex items-center gap-3 mb-4">
-              <span className="text-3xl font-bold text-white">{formatPrice(product.price)}</span>
+              <span className="text-3xl font-bold text-white">{formatPrice(product.price, currency)}</span>
               {product.comparePrice && (
                 <>
                   <span className="text-xl text-gray-500 line-through">
-                    {formatPrice(product.comparePrice)}
+                    {formatPrice(product.comparePrice, currency)}
                   </span>
                   <Badge variant="destructive">Save {discount}%</Badge>
                 </>

@@ -4,10 +4,12 @@ import { X, ShoppingCart, Minus, Plus, Trash2, ArrowRight } from "lucide-react"
 import { useCartStore } from "@/store/cart"
 import { Button } from "@/components/ui/button"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 import Link from "next/link"
 import Image from "next/image"
 
 export function CartDrawer() {
+  const currency = useCurrency()
   const { items, isOpen, closeCart, removeItem, updateQuantity, totalPrice } = useCartStore()
   const total = totalPrice()
 
@@ -82,7 +84,7 @@ export function CartDrawer() {
                     {item.product.name}
                   </p>
                   <p className="text-blue-400 font-semibold text-sm mt-1">
-                    {formatPrice(item.product.price)}
+                    {formatPrice(item.product.price, currency)}
                   </p>
 
                   {/* Quantity Controls */}
@@ -125,7 +127,7 @@ export function CartDrawer() {
           <div className="p-5 border-t border-[#1e1e1e] space-y-4">
             <div className="flex items-center justify-between">
               <span className="text-gray-400">Subtotal</span>
-              <span className="text-white font-semibold text-lg">{formatPrice(total)}</span>
+              <span className="text-white font-semibold text-lg">{formatPrice(total, currency)}</span>
             </div>
             <p className="text-xs text-gray-500">Shipping calculated at checkout</p>
             <Button

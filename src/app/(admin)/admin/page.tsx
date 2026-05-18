@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import Link from "next/link"
 import {
   ShoppingBag,
@@ -68,12 +69,12 @@ const statusColors: Record<string, "default" | "success" | "warning" | "destruct
 }
 
 export default async function AdminDashboard() {
-  const stats = await getDashboardStats()
+  const [stats, currency] = await Promise.all([getDashboardStats(), getCurrency()])
 
   const cards = [
     {
       title: "Total Revenue",
-      value: formatPrice(stats.totalRevenue),
+      value: formatPrice(stats.totalRevenue, currency),
       icon: TrendingUp,
       color: "text-green-400",
       bg: "bg-green-400/10",
@@ -179,7 +180,7 @@ export default async function AdminDashboard() {
                     <p className="text-gray-500 text-xs truncate">{order.user?.name || order.user?.email}</p>
                   </div>
                   <div className="text-right shrink-0">
-                    <p className="text-white text-sm">{formatPrice(Number(order.totalAmount))}</p>
+                    <p className="text-white text-sm">{formatPrice(Number(order.totalAmount), currency)}</p>
                     <p className="text-gray-600 text-xs">
                       {new Date(order.createdAt).toLocaleDateString("en-AE")}
                     </p>

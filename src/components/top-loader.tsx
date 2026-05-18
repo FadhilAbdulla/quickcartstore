@@ -16,10 +16,8 @@ export function TopLoader({ color, height = 2 }: TopLoaderProps) {
 
   // End the bar when the new page renders (pathname has changed)
   useEffect(() => {
-    if (started.current) {
-      NProgress.done()
-      started.current = false
-    }
+    NProgress.done()
+    started.current = false
   }, [pathname])
 
   // Configure NProgress and wire up click → start

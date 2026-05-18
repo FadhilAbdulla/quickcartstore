@@ -5,10 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-export function formatPrice(price: number | string) {
-  return new Intl.NumberFormat("en-AE", {
+const CURRENCY_LOCALES: Record<string, string> = {
+  AED: "en-AE",
+  USD: "en-US",
+  EUR: "en-GB",
+  GBP: "en-GB",
+  SAR: "en-SA",
+  KWD: "en-KW",
+  QAR: "en-QA",
+  BHD: "en-BH",
+  OMR: "en-OM",
+}
+
+export function formatPrice(price: number | string, currency = "AED") {
+  return new Intl.NumberFormat(CURRENCY_LOCALES[currency] ?? "en-US", {
     style: "currency",
-    currency: "AED",
+    currency,
     minimumFractionDigits: 0,
   }).format(Number(price))
 }

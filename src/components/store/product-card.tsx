@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { ShoppingCart } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 import { useCartStore, CartProduct } from "@/store/cart"
 import { Button } from "@/components/ui/button"
 import { toast } from "sonner"
@@ -24,6 +25,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({ product }: ProductCardProps) {
+  const currency = useCurrency()
   const { addItem } = useCartStore()
   const [imgError, setImgError] = useState(false)
   const price = Number(product.price)
@@ -80,8 +82,8 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Content */}
         <div className="p-4 flex flex-col flex-1">
-          <p className="text-xs text-blue-400 font-semibold mb-1 uppercase tracking-wide">{product.brand.name}</p>
-          <h3 className="text-white font-medium text-sm leading-snug line-clamp-2 mb-3 group-hover:text-blue-100 transition-colors min-h-[2.5rem]">
+          <p className="text-sm text-blue-400 font-semibold mb-1 uppercase tracking-wide">{product.brand.name}</p>
+          <h3 className="text-white font-medium text-base leading-snug line-clamp-2 mb-3 group-hover:text-blue-100 transition-colors min-h-[2.75rem]">
             {product.name}
           </h3>
 
@@ -89,12 +91,12 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.specs && (
             <div className="flex flex-wrap gap-1 mb-3 min-h-[1.5rem]">
               {product.specs.ram && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-400">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-300">
                   {product.specs.ram}
                 </span>
               )}
               {product.specs.storage && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-400">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-300">
                   {product.specs.storage}
                 </span>
               )}
@@ -109,15 +111,15 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Push price + stock + button to bottom */}
           <div className="mt-auto space-y-3">
             <div className="flex items-end gap-2">
-              <span className="text-white font-bold text-xl">{formatPrice(price)}</span>
+              <span className="text-white font-bold text-xl">{formatPrice(price, currency)}</span>
               {comparePrice && comparePrice > price && (
-                <span className="text-gray-500 text-sm line-through mb-0.5">{formatPrice(comparePrice)}</span>
+                <span className="text-gray-500 text-sm line-through mb-0.5">{formatPrice(comparePrice, currency)}</span>
               )}
             </div>
 
             <div className="flex items-center gap-1.5">
               <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${product.stock > 10 ? "bg-green-500" : product.stock > 0 ? "bg-yellow-500" : "bg-red-500"}`} />
-              <span className="text-xs text-gray-400">
+              <span className="text-sm text-gray-300">
                 {product.stock > 10 ? "In Stock" : product.stock > 0 ? `Only ${product.stock} left` : "Out of Stock"}
               </span>
             </div>

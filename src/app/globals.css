@@ -68,13 +68,19 @@ body {
 
 /* ── Text ──
    .text-white flips dark for page content.
-   Buttons use text-[#ffffff] so they are NOT affected here. */
+   Buttons/icons use text-[#ffffff] so they are NOT affected here. */
 [data-theme="light"] .text-white  { color: #0f172a !important; }
+[data-theme="light"] .hover\:text-white:hover { color: #0f172a !important; }
+[data-theme="light"] .text-gray-200 { color: #334155 !important; }
 [data-theme="light"] .text-gray-300 { color: #475569 !important; }
 [data-theme="light"] .text-gray-400 { color: #64748b !important; }
 [data-theme="light"] .text-gray-500 { color: #475569 !important; }
 [data-theme="light"] .text-gray-600 { color: #374151 !important; }
 [data-theme="light"] .text-gray-700 { color: #1f2937 !important; }
+
+/* ── Category nav bar: always dark regardless of theme ── */
+[data-theme="light"] .category-nav-tab { color: #e2e8f0 !important; }
+[data-theme="light"] .category-nav-tab:hover { color: #ffffff !important; background-color: #334155 !important; }
 
 /* ── Hex backgrounds ── */
 [data-theme="light"] .bg-\[\#0a0a0a\]    { background-color: #f1f5f9 !important; }
@@ -120,6 +126,16 @@ body {
 /* Blue error/accent states */
 [data-theme="light"] .bg-blue-950\/20   { background-color: #eff6ff !important; }
 [data-theme="light"] .bg-blue-950\/30   { background-color: #dbeafe !important; }
+
+/* ── Yellow / promo buttons (mega-menu deals card) ── */
+[data-theme="light"] .bg-yellow-950\/20 { background-color: #fef9c3 !important; }
+[data-theme="light"] .border-yellow-600\/30 { border-color: rgba(202,138,4,0.4) !important; }
+[data-theme="light"] .text-yellow-400 { color: #b45309 !important; }
+
+/* ── Mega-menu quick-access card ── */
+[data-theme="light"] .from-blue-900\/40 { --tw-gradient-from: #dbeafe !important; }
+[data-theme="light"] .to-blue-950\/60 { --tw-gradient-to: #bfdbfe !important; }
+[data-theme="light"] .border-blue-800\/30 { border-color: rgba(37,99,235,0.25) !important; }
 
 /* ── Divide ── */
 [data-theme="light"] .divide-\[\#1a1a1a\] > * + * { border-color: #e2e8f0 !important; }

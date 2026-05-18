@@ -7,6 +7,7 @@ import Link from "next/link"
 import { RotateCcw, Package } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 
 const statusColors: Record<string, "default" | "success" | "warning" | "destructive" | "outline"> = {
   PENDING: "warning",
@@ -26,14 +27,17 @@ export default async function ReturnsPage() {
   const session = await auth()
   if (!session?.user) redirect("/auth/signin")
 
-  const returns = await db.return.findMany({
-    where: { userId: session.user.id },
-    include: {
-      product: { include: { brand: true } },
-      order: true,
-    },
-    orderBy: { createdAt: "desc" },
-  })
+  const [returns, currency] = await Promise.all([
+    db.return.findMany({
+      where: { userId: session.user.id },
+      include: {
+        product: { include: { brand: true } },
+        order: true,
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    getCurrency(),
+  ])
 
   return (
     <div className="min-h-screen py-10">
@@ -114,7 +118,7 @@ export default async function ReturnsPage() {
 
                     {ret.refundAmount && (
                       <p className="mt-2 text-xs text-green-400">
-                        Refund: {formatPrice(Number(ret.refundAmount))}
+                        Refund: {formatPrice(Number(ret.refundAmount), currency)}
                       </p>
                     )}
 

@@ -3,6 +3,7 @@ export const dynamic = "force-dynamic"
 import { db } from "@/lib/db"
 import type { ReturnStatus } from "@prisma/client"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import Link from "next/link"
 import { Badge } from "@/components/ui/badge"
 import { RotateCcw } from "lucide-react"
@@ -20,17 +21,20 @@ export default async function AdminReturnsPage({
   searchParams: Promise<{ status?: string }>
 }) {
   const params = await searchParams
-  const returns = await db.return.findMany({
-    where: {
-      ...(params.status && { status: params.status as ReturnStatus }),
-    },
-    include: {
-      user: true,
-      product: { include: { brand: true } },
-      order: true,
-    },
-    orderBy: { createdAt: "desc" },
-  })
+  const [returns, currency] = await Promise.all([
+    db.return.findMany({
+      where: {
+        ...(params.status && { status: params.status as ReturnStatus }),
+      },
+      include: {
+        user: true,
+        product: { include: { brand: true } },
+        order: true,
+      },
+      orderBy: { createdAt: "desc" },
+    }),
+    getCurrency(),
+  ])
 
   const statuses = ["PENDING", "APPROVED", "REJECTED", "REFUNDED"]
 
@@ -115,7 +119,7 @@ export default async function AdminReturnsPage({
                     </td>
                     <td className="px-4 py-3 text-gray-400">{ret.quantity}</td>
                     <td className="px-4 py-3 text-white">
-                      {ret.refundAmount ? formatPrice(Number(ret.refundAmount)) : "—"}
+                      {ret.refundAmount ? formatPrice(Number(ret.refundAmount), currency) : "—"}
                     </td>
                     <td className="px-4 py-3">
                       <Badge variant={statusColors[ret.status] || "outline"}>{ret.status}</Badge>

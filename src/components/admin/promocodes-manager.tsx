@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
 import { Plus, Trash2, ToggleLeft, ToggleRight, Ticket, X, Loader2 } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 
 interface PromoCode {
   id: string
@@ -35,6 +36,7 @@ const emptyForm = {
 }
 
 export function PromoCodesManager({ initialCodes }: PromoCodesManagerProps) {
+  const currency = useCurrency()
   const [codes, setCodes] = useState<PromoCode[]>(initialCodes)
   const [showForm, setShowForm] = useState(false)
   const [form, setForm] = useState(emptyForm)
@@ -225,14 +227,14 @@ export function PromoCodesManager({ initialCodes }: PromoCodesManagerProps) {
                     <td className="px-5 py-4">
                       <span className="font-mono font-semibold text-white text-sm">{code.code}</span>
                       {code.minOrderAmount && (
-                        <p className="text-gray-600 text-xs mt-0.5">Min {formatPrice(code.minOrderAmount)}</p>
+                        <p className="text-gray-600 text-xs mt-0.5">Min {formatPrice(code.minOrderAmount, currency)}</p>
                       )}
                     </td>
                     <td className="px-5 py-4 hidden sm:table-cell">
                       <span className="text-white text-sm">
                         {code.discountType === "PERCENTAGE"
                           ? `${code.discountValue}% off`
-                          : `${formatPrice(code.discountValue)} off`}
+                          : `${formatPrice(code.discountValue, currency)} off`}
                       </span>
                     </td>
                     <td className="px-5 py-4 hidden md:table-cell">

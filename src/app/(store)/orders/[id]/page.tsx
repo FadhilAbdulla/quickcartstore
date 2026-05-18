@@ -6,6 +6,7 @@ import { notFound, redirect } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft, Package, MapPin } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 
@@ -29,13 +30,16 @@ export default async function OrderDetailPage({
   const session = await auth()
   if (!session?.user) redirect("/auth/signin")
 
-  const order = await db.order.findUnique({
-    where: { id },
-    include: {
-      items: { include: { product: { include: { brand: true } } } },
-      address: true,
-    },
-  })
+  const [order, currency] = await Promise.all([
+    db.order.findUnique({
+      where: { id },
+      include: {
+        items: { include: { product: { include: { brand: true } } } },
+        address: true,
+      },
+    }),
+    getCurrency(),
+  ])
 
   if (!order || order.userId !== session.user.id) notFound()
 
@@ -129,11 +133,11 @@ export default async function OrderDetailPage({
                       <p className="text-xs text-blue-400">{item.product.brand.name}</p>
                       <p className="text-white text-sm font-medium truncate">{item.product.name}</p>
                       <p className="text-gray-500 text-xs mt-0.5">
-                        {formatPrice(Number(item.price))} × {item.quantity}
+                        {formatPrice(Number(item.price), currency)} × {item.quantity}
                       </p>
                     </div>
                     <p className="text-white font-semibold text-sm shrink-0">
-                      {formatPrice(Number(item.price) * item.quantity)}
+                      {formatPrice(Number(item.price) * item.quantity, currency)}
                     </p>
                   </div>
                 ))}
@@ -162,11 +166,11 @@ export default async function OrderDetailPage({
               <div className="space-y-2 text-sm">
                 <div className="flex justify-between text-gray-400">
                   <span>Subtotal</span>
-                  <span>{formatPrice(Number(order.totalAmount) / 1.05)}</span>
+                  <span>{formatPrice(Number(order.totalAmount) / 1.05, currency)}</span>
                 </div>
                 <div className="flex justify-between text-gray-400">
                   <span>VAT (5%)</span>
-                  <span>{formatPrice(Number(order.totalAmount) - Number(order.totalAmount) / 1.05)}</span>
+                  <span>{formatPrice(Number(order.totalAmount) - Number(order.totalAmount) / 1.05, currency)}</span>
                 </div>
                 <div className="flex justify-between text-gray-400">
                   <span>Shipping</span>
@@ -174,7 +178,7 @@ export default async function OrderDetailPage({
                 </div>
                 <div className="flex justify-between text-white font-semibold text-base pt-2 border-t border-[#1e1e1e]">
                   <span>Total</span>
-                  <span>{formatPrice(Number(order.totalAmount))}</span>
+                  <span>{formatPrice(Number(order.totalAmount), currency)}</span>
                 </div>
               </div>
               <p className="text-gray-500 text-xs mt-3">Payment: Cash on Delivery</p>

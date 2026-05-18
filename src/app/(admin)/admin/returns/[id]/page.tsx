@@ -5,6 +5,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import { Badge } from "@/components/ui/badge"
 import { ReturnActionButtons } from "@/components/admin/return-action-buttons"
 
@@ -21,14 +22,17 @@ export default async function AdminReturnDetailPage({
   params: Promise<{ id: string }>
 }) {
   const { id } = await params
-  const ret = await db.return.findUnique({
-    where: { id },
-    include: {
-      user: true,
-      product: { include: { brand: true } },
-      order: true,
-    },
-  })
+  const [ret, currency] = await Promise.all([
+    db.return.findUnique({
+      where: { id },
+      include: {
+        user: true,
+        product: { include: { brand: true } },
+        order: true,
+      },
+    }),
+    getCurrency(),
+  ])
 
   if (!ret) notFound()
 
@@ -116,7 +120,7 @@ export default async function AdminReturnDetailPage({
             <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-5">
               <h2 className="text-white font-semibold mb-2">Refund Amount</h2>
               <p className="text-2xl font-bold text-green-400">
-                {formatPrice(Number(ret.refundAmount))}
+                {formatPrice(Number(ret.refundAmount), currency)}
               </p>
             </div>
           )}

@@ -11,7 +11,7 @@ export default async function NewProductPage() {
     <div>
       <div className="mb-8">
         <h1 className="text-2xl font-bold text-white">Add New Product</h1>
-        <p className="text-gray-500 text-sm mt-1">Fill in the details to add a new laptop</p>
+        <p className="text-gray-500 text-sm mt-1">Fill in the details to add a new product</p>
       </div>
       <ProductForm brands={brands} categories={categories} />
     </div>

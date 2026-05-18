@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 
 const RETURN_REASONS = [
   "Item arrived damaged",
@@ -41,6 +42,7 @@ interface Order {
 }
 
 export function ReturnForm({ order }: { order: Order }) {
+  const currency = useCurrency()
   const router = useRouter()
   const [selectedItemId, setSelectedItemId] = useState("")
   const [reason, setReason] = useState("")
@@ -126,7 +128,7 @@ export function ReturnForm({ order }: { order: Order }) {
             <div className="flex-1 min-w-0">
               <p className="text-xs text-blue-400">{selectedItem.product.brand.name}</p>
               <p className="text-white text-sm font-medium truncate">{selectedItem.product.name}</p>
-              <p className="text-gray-500 text-xs">{formatPrice(Number(selectedItem.price))} × {selectedItem.quantity}</p>
+              <p className="text-gray-500 text-xs">{formatPrice(Number(selectedItem.price), currency)} × {selectedItem.quantity}</p>
             </div>
           </div>
         )}

@@ -11,6 +11,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { formatPrice } from "@/lib/utils"
+import { useCurrency } from "@/context/currency-context"
 import { toast } from "sonner"
 
 const emirates = ["Abu Dhabi", "Dubai", "Sharjah", "Ajman", "Umm Al Quwain", "Ras Al Khaimah", "Fujairah"]
@@ -32,8 +33,10 @@ export default function CheckoutPage() {
   const [promoLoading, setPromoLoading] = useState(false)
   const [appliedPromo, setAppliedPromo] = useState<AppliedPromo | null>(null)
   const [form, setForm] = useState({ name: "", phone: "", line1: "", line2: "", city: "", emirate: "", notes: "" })
+  const currency = useCurrency()
   const [vatRate, setVatRate] = useState(5)
   const [processingRate, setProcessingRate] = useState(0)
+  const [shippingFee, setShippingFee] = useState(0)
 
   useEffect(() => {
     if (session?.user) setForm((f) => ({ ...f, name: session.user?.name || "" }))
@@ -42,7 +45,11 @@ export default function CheckoutPage() {
   useEffect(() => {
     fetch("/api/settings/charges")
       .then((r) => r.json())
-      .then((d) => { setVatRate(d.vatRate); setProcessingRate(d.processingRate) })
+      .then((d) => {
+        setVatRate(d.vatRate)
+        setProcessingRate(d.processingRate)
+        setShippingFee(d.shippingFee ?? 0)
+      })
       .catch(() => {})
   }, [])
 
@@ -51,7 +58,9 @@ export default function CheckoutPage() {
   const afterDiscount = Math.max(0, subtotal - promoDiscount)
   const vat = afterDiscount * (vatRate / 100)
   const processingFee = afterDiscount * (processingRate / 100)
-  const grandTotal = afterDiscount + vat + processingFee
+  const grandTotal = afterDiscount + vat + processingFee + shippingFee
+
+  const fmt = (price: number) => formatPrice(price, currency)
 
   const applyPromo = async () => {
     if (!promoInput.trim()) return
@@ -65,7 +74,7 @@ export default function CheckoutPage() {
       const data = await res.json()
       if (!res.ok) { toast.error(data.error); return }
       setAppliedPromo(data)
-      toast.success(`Promo applied — ${data.discountType === "PERCENTAGE" ? `${data.discountValue}%` : formatPrice(data.discountValue)} off!`)
+      toast.success(`Promo applied — ${data.discountType === "PERCENTAGE" ? `${data.discountValue}%` : fmt(data.discountValue)} off!`)
     } finally {
       setPromoLoading(false)
     }
@@ -76,7 +85,7 @@ export default function CheckoutPage() {
       <div className="min-h-screen flex items-center justify-center">
         <div className="text-center">
           <p className="text-white text-xl mb-4">Your cart is empty</p>
-          <Button asChild><Link href="/products">Browse Laptops</Link></Button>
+          <Button asChild><Link href="/products">Browse Products</Link></Button>
         </div>
       </div>
     )
@@ -169,8 +178,8 @@ export default function CheckoutPage() {
                       <p className="text-green-400/70 text-xs">
                         {appliedPromo.discountType === "PERCENTAGE"
                           ? `${appliedPromo.discountValue}% off`
-                          : `${formatPrice(appliedPromo.discountValue)} off`}
-                        {" — saving "}{formatPrice(appliedPromo.discount)}
+                          : `${fmt(appliedPromo.discountValue)} off`}
+                        {" — saving "}{fmt(appliedPromo.discount)}
                       </p>
                     </div>
                     <button type="button" onClick={() => { setAppliedPromo(null); setPromoInput("") }} className="text-gray-500 hover:text-red-400 transition-colors">
@@ -208,7 +217,7 @@ export default function CheckoutPage() {
               </div>
 
               <Button type="submit" className="w-full h-12 text-base" disabled={loading}>
-                {loading ? <><Loader2 className="h-4 w-4 animate-spin" />Placing Order...</> : <><CheckCircle className="h-4 w-4" />Place Order — {formatPrice(grandTotal)}</>}
+                {loading ? <><Loader2 className="h-4 w-4 animate-spin" />Placing Order...</> : <><CheckCircle className="h-4 w-4" />Place Order — {fmt(grandTotal)}</>}
               </Button>
             </form>
           </div>
@@ -229,35 +238,38 @@ export default function CheckoutPage() {
                       <p className="text-white text-xs truncate">{item.product.name}</p>
                       <p className="text-gray-500 text-xs">× {item.quantity}</p>
                     </div>
-                    <span className="text-white text-xs font-medium shrink-0">{formatPrice(item.product.price * item.quantity)}</span>
+                    <span className="text-white text-xs font-medium shrink-0">{fmt(item.product.price * item.quantity)}</span>
                   </div>
                 ))}
               </div>
               <div className="border-t border-[#1e1e1e] pt-4 space-y-2 text-sm">
                 <div className="flex justify-between text-gray-400">
-                  <span>Subtotal</span><span>{formatPrice(subtotal)}</span>
+                  <span>Subtotal</span><span>{fmt(subtotal)}</span>
                 </div>
                 {appliedPromo && (
                   <div className="flex justify-between text-green-400">
                     <span>Promo ({appliedPromo.code})</span>
-                    <span>-{formatPrice(appliedPromo.discount)}</span>
+                    <span>-{fmt(appliedPromo.discount)}</span>
                   </div>
                 )}
                 {vatRate > 0 && (
                   <div className="flex justify-between text-gray-400">
-                    <span>VAT ({vatRate}%)</span><span>{formatPrice(vat)}</span>
+                    <span>VAT ({vatRate}%)</span><span>{fmt(vat)}</span>
                   </div>
                 )}
                 {processingRate > 0 && (
                   <div className="flex justify-between text-gray-400">
-                    <span>Processing ({processingRate}%)</span><span>{formatPrice(processingFee)}</span>
+                    <span>Processing ({processingRate}%)</span><span>{fmt(processingFee)}</span>
                   </div>
                 )}
                 <div className="flex justify-between text-gray-400">
-                  <span>Shipping</span><span className="text-green-400">Free</span>
+                  <span>Shipping</span>
+                  {shippingFee > 0
+                    ? <span>{fmt(shippingFee)}</span>
+                    : <span className="text-green-400">Free</span>}
                 </div>
                 <div className="flex justify-between text-white font-semibold text-base pt-1 border-t border-[#1e1e1e]">
-                  <span>Total</span><span>{formatPrice(grandTotal)}</span>
+                  <span>Total</span><span>{fmt(grandTotal)}</span>
                 </div>
               </div>
             </div>

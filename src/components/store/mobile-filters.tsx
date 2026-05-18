@@ -59,9 +59,10 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
 
       {/* Drawer */}
       <div
-        className={`fixed inset-y-0 left-0 z-50 w-72 bg-[#0a0a0a] border-r border-[#1e1e1e] flex flex-col transition-transform duration-300 lg:hidden ${
+        className={`fixed inset-y-0 left-0 z-50 w-72 border-r border-[#1e1e1e] flex flex-col transition-transform duration-300 lg:hidden ${
           open ? "translate-x-0" : "-translate-x-full"
         }`}
+        style={{ backgroundColor: "#0d0d0d" }}
       >
         {/* Header */}
         <div className="flex items-center justify-between px-5 py-4 border-b border-[#1e1e1e]">
@@ -78,13 +79,13 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
         <div className="flex-1 overflow-y-auto p-5 space-y-6">
           {/* Brand */}
           <div>
-            <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Brand</h3>
+            <h3 className="text-gray-300 text-xs font-semibold uppercase tracking-wider mb-2">Brand</h3>
             <div className="space-y-1">
               <a
                 href="/products"
                 onClick={() => setOpen(false)}
                 className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                  !currentBrand ? "bg-blue-600/20 text-blue-400" : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
+                  !currentBrand ? "bg-blue-600/20 text-blue-400" : "text-gray-100 hover:bg-[#2a2a2a]"
                 }`}
               >
                 All Brands
@@ -97,7 +98,7 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
                   className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                     currentBrand?.toLowerCase() === brand.name.toLowerCase()
                       ? "bg-blue-600/20 text-blue-400"
-                      : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
+                      : "text-gray-100 hover:bg-[#2a2a2a]"
                   }`}
                 >
                   {brand.name}
@@ -109,7 +110,7 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
           {/* Category */}
           {categories.length > 0 && (
             <div>
-              <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Category</h3>
+              <h3 className="text-gray-300 text-xs font-semibold uppercase tracking-wider mb-2">Category</h3>
               <div className="space-y-1">
                 {categories.map((cat) => (
                   <a
@@ -119,7 +120,7 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
                       currentCategory === cat.slug
                         ? "bg-blue-600/20 text-blue-400"
-                        : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
+                        : "text-gray-100 hover:bg-[#2a2a2a]"
                     }`}
                   >
                     {cat.name}
@@ -131,7 +132,7 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
 
           {/* Price Range */}
           <div>
-            <h3 className="text-gray-400 text-xs font-semibold uppercase tracking-wider mb-2">Price Range</h3>
+            <h3 className="text-gray-300 text-xs font-semibold uppercase tracking-wider mb-2">Price Range</h3>
             <div className="space-y-1">
               {priceRanges.map((range) => {
                 const isActive = currentMin === range.min && currentMax === range.max
@@ -141,7 +142,7 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
                     href={`/products?${currentBrand ? `brand=${currentBrand}&` : ""}minPrice=${range.min}&maxPrice=${range.max}`}
                     onClick={() => setOpen(false)}
                     className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                      isActive ? "bg-blue-600/20 text-blue-400" : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
+                      isActive ? "bg-blue-600/20 text-blue-400" : "text-gray-100 hover:bg-[#2a2a2a]"
                     }`}
                   >
                     {range.label}
@@ -157,7 +158,7 @@ export function MobileFilters({ brands, categories, currentBrand, currentCategor
           <a
             href="/products"
             onClick={() => setOpen(false)}
-            className="block w-full text-center py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
+            className="block w-full text-center py-2 rounded-lg text-sm text-gray-300 hover:bg-[#2a2a2a] transition-colors"
           >
             Clear all filters
           </a>

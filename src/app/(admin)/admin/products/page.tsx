@@ -2,6 +2,7 @@ export const dynamic = "force-dynamic"
 
 import { db } from "@/lib/db"
 import { formatPrice } from "@/lib/utils"
+import { getCurrency } from "@/lib/get-currency"
 import Link from "next/link"
 import { Plus, Pencil, Package } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -24,13 +25,14 @@ export default async function AdminProductsPage({
     where.brand = { name: { equals: params.brand, mode: "insensitive" } }
   }
 
-  const [products, brands] = await Promise.all([
+  const [products, brands, currency] = await Promise.all([
     db.product.findMany({
       where,
       include: { brand: true, category: true },
       orderBy: { createdAt: "desc" },
     }),
     db.brand.findMany({ orderBy: { name: "asc" } }),
+    getCurrency(),
   ])
 
   return (
@@ -125,10 +127,10 @@ export default async function AdminProductsPage({
                     <td className="px-4 py-3 text-gray-400">{product.category.name}</td>
                     <td className="px-4 py-3">
                       <div>
-                        <p className="text-white">{formatPrice(Number(product.price))}</p>
+                        <p className="text-white">{formatPrice(Number(product.price), currency)}</p>
                         {product.comparePrice && (
                           <p className="text-gray-500 text-xs line-through">
-                            {formatPrice(Number(product.comparePrice))}
+                            {formatPrice(Number(product.comparePrice), currency)}
                           </p>
                         )}
                       </div>

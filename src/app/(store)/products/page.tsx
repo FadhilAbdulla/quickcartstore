@@ -4,7 +4,7 @@ import { db } from "@/lib/db"
 import { ProductCard } from "@/components/store/product-card"
 import { ProductSortSelect } from "@/components/store/product-sort-select"
 import { MobileFilters } from "@/components/store/mobile-filters"
-import { SlidersHorizontal } from "lucide-react"
+import { SidebarFilters } from "@/components/store/sidebar-filters"
 
 interface SearchParams {
   brand?: string
@@ -75,114 +75,40 @@ export default async function ProductsPage({
     getFilterData(),
   ])
 
+  const activeCategory = categories.find((c) => c.slug === params.category)
   const title = params.search
-    ? `Search: "${params.search}"`
+    ? `Results for "${params.search}"`
     : params.brand
-    ? `${params.brand} Laptops`
-    : params.category
-    ? `${params.category} Laptops`
+    ? `${params.brand}`
     : params.featured
-    ? "Featured Laptops"
-    : "All Laptops"
+    ? "Deals & Featured"
+    : activeCategory?.name ?? "All Products"
 
   return (
-    <div className="min-h-screen py-8">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white">{title}</h1>
-          <p className="text-gray-500 text-sm mt-1">{products.length} products found</p>
-        </div>
+    <div className="min-h-screen">
+      <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-5">
+        <div className="flex gap-6">
 
-        <div className="flex gap-8">
-          {/* Sidebar Filters */}
-          <aside className="hidden lg:block w-56 shrink-0">
-            <div className="sticky top-24 space-y-6">
-              <div>
-                <h3 className="text-white font-semibold text-sm mb-3 flex items-center gap-2">
-                  <SlidersHorizontal className="h-4 w-4 text-blue-400" />
-                  Filters
-                </h3>
-              </div>
-
-              {/* Brand Filter */}
-              <div>
-                <h4 className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-2">Brand</h4>
-                <div className="space-y-1">
-                  <a
-                    href="/products"
-                    className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                      !params.brand ? "bg-blue-600/20 text-blue-400" : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
-                    }`}
-                  >
-                    All Brands
-                  </a>
-                  {brands.map((brand) => (
-                    <a
-                      key={brand.id}
-                      href={`/products?brand=${brand.name.toLowerCase()}`}
-                      className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                        params.brand?.toLowerCase() === brand.name.toLowerCase()
-                          ? "bg-blue-600/20 text-blue-400"
-                          : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
-                      }`}
-                    >
-                      {brand.name}
-                    </a>
-                  ))}
-                </div>
-              </div>
-
-              {/* Category Filter */}
-              {categories.length > 0 && (
-                <div>
-                  <h4 className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-2">Category</h4>
-                  <div className="space-y-1">
-                    {categories.map((cat) => (
-                      <a
-                        key={cat.id}
-                        href={`/products?category=${cat.slug}`}
-                        className={`block px-3 py-2 rounded-lg text-sm transition-colors ${
-                          params.category === cat.slug
-                            ? "bg-blue-600/20 text-blue-400"
-                            : "text-gray-400 hover:text-white hover:bg-[#1a1a1a]"
-                        }`}
-                      >
-                        {cat.name}
-                      </a>
-                    ))}
-                  </div>
-                </div>
-              )}
-
-              {/* Price Range */}
-              <div>
-                <h4 className="text-gray-400 text-xs font-medium uppercase tracking-wider mb-2">Price Range</h4>
-                <div className="space-y-1">
-                  {[
-                    { label: "Under AED 3,000", min: "", max: "3000" },
-                    { label: "AED 3,000 - 6,000", min: "3000", max: "6000" },
-                    { label: "AED 6,000 - 10,000", min: "6000", max: "10000" },
-                    { label: "Above AED 10,000", min: "10000", max: "" },
-                  ].map((range) => (
-                    <a
-                      key={range.label}
-                      href={`/products?${params.brand ? `brand=${params.brand}&` : ""}minPrice=${range.min}&maxPrice=${range.max}`}
-                      className="block px-3 py-2 rounded-lg text-sm text-gray-400 hover:text-white hover:bg-[#1a1a1a] transition-colors"
-                    >
-                      {range.label}
-                    </a>
-                  ))}
-                </div>
-              </div>
+          {/* ── Sidebar ── */}
+          <aside className="hidden lg:block w-60 shrink-0">
+            <div className="sticky top-[116px]">
+              <SidebarFilters
+                brands={brands}
+                categories={categories}
+                currentBrand={params.brand}
+                currentCategory={params.category}
+                currentMin={params.minPrice}
+                currentMax={params.maxPrice}
+                currentSort={params.sort}
+              />
             </div>
           </aside>
 
-          {/* Product Grid */}
-          <div className="flex-1">
-            {/* Sort Bar */}
-            <div className="flex items-center justify-between mb-6 pb-4 border-b border-[#1a1a1a]">
-              <div className="flex flex-wrap items-center gap-2">
+          {/* ── Main ── */}
+          <div className="flex-1 min-w-0">
+            {/* Compact header bar */}
+            <div className="flex items-center justify-between mb-4 gap-3 flex-wrap">
+              <div className="flex items-center gap-3 flex-wrap">
                 {/* Mobile filters trigger */}
                 <MobileFilters
                   brands={brands}
@@ -192,36 +118,54 @@ export default async function ProductsPage({
                   currentMin={params.minPrice}
                   currentMax={params.maxPrice}
                 />
+
+                <div>
+                  <h1 className="text-lg font-bold text-white leading-tight">{title}</h1>
+                  <p className="text-gray-500 text-xs">{products.length} products</p>
+                </div>
+
+                {/* Active filter chips */}
                 {params.brand && (
-                  <span className="px-3 py-1 rounded-full bg-blue-600/20 border border-blue-600/30 text-blue-400 text-xs">
-                    Brand: {params.brand}
-                    <a href="/products" className="ml-2 hover:text-white">×</a>
-                  </span>
+                  <a
+                    href={`/products${params.category ? `?category=${params.category}` : ""}`}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/15 border border-blue-600/30 text-blue-400 text-xs hover:border-blue-500 transition-colors"
+                  >
+                    {params.brand} <span className="text-blue-300">×</span>
+                  </a>
                 )}
                 {params.category && (
-                  <span className="px-3 py-1 rounded-full bg-blue-600/20 border border-blue-600/30 text-blue-400 text-xs">
-                    Category: {params.category}
-                    <a href="/products" className="ml-2 hover:text-white">×</a>
-                  </span>
+                  <a
+                    href={`/products${params.brand ? `?brand=${params.brand}` : ""}`}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/15 border border-blue-600/30 text-blue-400 text-xs hover:border-blue-500 transition-colors"
+                  >
+                    {activeCategory?.name ?? params.category} <span className="text-blue-300">×</span>
+                  </a>
+                )}
+                {(params.minPrice || params.maxPrice) && (
+                  <a
+                    href={`/products${params.brand ? `?brand=${params.brand}` : params.category ? `?category=${params.category}` : ""}`}
+                    className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-blue-600/15 border border-blue-600/30 text-blue-400 text-xs hover:border-blue-500 transition-colors"
+                  >
+                    AED {params.minPrice || "0"} – {params.maxPrice || "Any"} <span className="text-blue-300">×</span>
+                  </a>
                 )}
               </div>
+
               <ProductSortSelect currentSort={params.sort} />
             </div>
 
+            {/* Product Grid */}
             {products.length === 0 ? (
               <div className="flex flex-col items-center justify-center py-24 text-center">
                 <div className="text-6xl mb-4">🔍</div>
                 <h3 className="text-white text-xl font-semibold mb-2">No products found</h3>
                 <p className="text-gray-500 mb-6">Try adjusting your filters or search query</p>
-                <a
-                  href="/products"
-                  className="text-blue-400 hover:text-blue-300 text-sm"
-                >
+                <a href="/products" className="text-blue-400 hover:text-blue-300 text-sm">
                   Clear all filters
                 </a>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5">
+              <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 gap-4">
                 {products.map((product) => (
                   <ProductCard
                     key={product.id}

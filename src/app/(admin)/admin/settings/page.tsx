@@ -17,6 +17,8 @@ export default async function AdminSettingsPage() {
         initialTheme={map.theme || "dark"}
         initialVatRate={parseFloat(map.vatRate ?? "5")}
         initialProcessingRate={parseFloat(map.processingRate ?? "0")}
+        initialCurrency={map.currency ?? "AED"}
+        initialShippingFee={parseFloat(map.shippingFee ?? "0")}
       />
     </div>
   )

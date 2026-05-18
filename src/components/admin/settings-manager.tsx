@@ -2,23 +2,35 @@
 
 import { useState } from "react"
 import { toast } from "sonner"
-import { Moon, Sun, Palette, Percent } from "lucide-react"
+import { Moon, Sun, Palette, Percent, DollarSign, Truck } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+
+const CURRENCIES = [
+  { code: "AED", label: "AED — UAE Dirham" },
+  { code: "USD", label: "USD — US Dollar" },
+]
 
 interface SettingsManagerProps {
   initialTheme: string
   initialVatRate: number
   initialProcessingRate: number
+  initialCurrency: string
+  initialShippingFee: number
 }
 
-export function SettingsManager({ initialTheme, initialVatRate, initialProcessingRate }: SettingsManagerProps) {
+export function SettingsManager({ initialTheme, initialVatRate, initialProcessingRate, initialCurrency, initialShippingFee }: SettingsManagerProps) {
   const [theme, setTheme] = useState(initialTheme)
   const [themeLoading, setThemeLoading] = useState(false)
   const [vatRate, setVatRate] = useState(String(initialVatRate))
   const [processingRate, setProcessingRate] = useState(String(initialProcessingRate))
   const [chargesLoading, setChargesLoading] = useState(false)
+  const [currency, setCurrency] = useState(initialCurrency)
+  const [currencyLoading, setCurrencyLoading] = useState(false)
+  const [shippingFee, setShippingFee] = useState(String(initialShippingFee))
+  const [shippingLoading, setShippingLoading] = useState(false)
 
   const handleThemeChange = async (newTheme: string) => {
     if (newTheme === theme) return
@@ -53,6 +65,40 @@ export function SettingsManager({ initialTheme, initialVatRate, initialProcessin
       toast.success("Charges updated successfully")
     } finally {
       setChargesLoading(false)
+    }
+  }
+
+  const handleCurrencyChange = async (newCurrency: string) => {
+    if (newCurrency === currency) return
+    setCurrencyLoading(true)
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ currency: newCurrency }),
+      })
+      if (!res.ok) { toast.error("Failed to update currency"); return }
+      setCurrency(newCurrency)
+      toast.success(`Currency changed to ${newCurrency}`)
+    } finally {
+      setCurrencyLoading(false)
+    }
+  }
+
+  const handleShippingSave = async () => {
+    const fee = parseFloat(shippingFee)
+    if (isNaN(fee) || fee < 0) { toast.error("Shipping fee must be 0 or greater"); return }
+    setShippingLoading(true)
+    try {
+      const res = await fetch("/api/admin/settings", {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ shippingFee: fee }),
+      })
+      if (!res.ok) { toast.error("Failed to save shipping fee"); return }
+      toast.success("Shipping fee updated successfully")
+    } finally {
+      setShippingLoading(false)
     }
   }
 
@@ -170,6 +216,57 @@ export function SettingsManager({ initialTheme, initialVatRate, initialProcessin
         <Button onClick={handleChargesSave} disabled={chargesLoading}>
           {chargesLoading ? "Saving..." : "Save Charges"}
         </Button>
+      </div>
+
+      <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-6">
+        <div className="flex items-center gap-2 mb-1">
+          <DollarSign className="h-4 w-4 text-blue-400" />
+          <h2 className="text-white font-semibold">Currency</h2>
+        </div>
+        <p className="text-gray-500 text-sm mb-6">
+          Sets the currency used across the store for displaying prices.
+        </p>
+        <div className="flex items-end gap-4">
+          <div className="flex-1 space-y-2">
+            <Label>Store Currency</Label>
+            <Select value={currency} onValueChange={handleCurrencyChange} disabled={currencyLoading}>
+              <SelectTrigger>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                {CURRENCIES.map((c) => (
+                  <SelectItem key={c.code} value={c.code}>{c.label}</SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </div>
+        </div>
+      </div>
+
+      <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-6">
+        <div className="flex items-center gap-2 mb-1">
+          <Truck className="h-4 w-4 text-blue-400" />
+          <h2 className="text-white font-semibold">Shipping</h2>
+        </div>
+        <p className="text-gray-500 text-sm mb-6">
+          Flat shipping fee added to every order. Set to 0 for free shipping.
+        </p>
+        <div className="flex items-end gap-4">
+          <div className="flex-1 space-y-2">
+            <Label>Shipping Fee</Label>
+            <Input
+              type="number"
+              min="0"
+              step="0.01"
+              value={shippingFee}
+              onChange={(e) => setShippingFee(e.target.value)}
+              placeholder="0"
+            />
+          </div>
+          <Button onClick={handleShippingSave} disabled={shippingLoading}>
+            {shippingLoading ? "Saving..." : "Save"}
+          </Button>
+        </div>
       </div>
     </div>
   )

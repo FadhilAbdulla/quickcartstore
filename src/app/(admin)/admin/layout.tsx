@@ -16,10 +16,10 @@ export default async function AdminLayout({
   }
 
   return (
-    <div className="flex min-h-screen bg-[#0a0a0a]">
+    <div className="flex min-h-screen" style={{ backgroundColor: "#0a0a0a" }}>
       <AdminSidebar />
-      <main className="flex-1 ml-60 min-h-screen">
-        <div className="p-8">{children}</div>
+      <main className="flex-1 md:ml-60 min-h-screen pt-14 md:pt-0">
+        <div className="p-4 md:p-8">{children}</div>
       </main>
     </div>
   )
