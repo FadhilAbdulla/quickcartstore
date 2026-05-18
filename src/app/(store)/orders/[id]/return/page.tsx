@@ -43,7 +43,21 @@ export default async function ReturnPage({
           <p className="text-gray-500 text-sm mt-1">Order {order.orderNumber}</p>
         </div>
 
-        <ReturnForm order={order} />
+        <ReturnForm order={{
+          id: order.id,
+          items: order.items.map((item) => ({
+            id: item.id,
+            productId: item.productId,
+            quantity: item.quantity,
+            price: item.price.toNumber(),
+            product: {
+              name: item.product.name,
+              images: item.product.images,
+              brand: { name: item.product.brand.name },
+            },
+          })),
+          returns: order.returns.map((r) => ({ productId: r.productId })),
+        }} />
       </div>
     </div>
   )
