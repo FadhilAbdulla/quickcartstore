@@ -65,16 +65,16 @@ export function HeroBanner({ banners }: HeroBannerProps) {
       <div className="absolute top-0 right-0 w-[600px] h-[600px] rounded-full opacity-10 blur-3xl" style={{ backgroundColor: "#0066BA" }} />
       <div className="absolute -bottom-20 -left-20 w-[400px] h-[400px] rounded-full opacity-10 blur-3xl" style={{ backgroundColor: "#0066BA" }} />
 
-      <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+      <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-24">
         <div className={`grid gap-8 items-center ${banner.image ? "grid-cols-1 lg:grid-cols-2" : "grid-cols-1"}`}>
 
           {/* Text */}
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-5">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-3 md:mb-5">
               {banner.title}
             </h1>
             {banner.subtitle && (
-              <p className="text-blue-100 text-lg leading-relaxed mb-8 max-w-xl opacity-90">
+              <p className="text-blue-100 text-sm sm:text-base md:text-lg leading-relaxed mb-5 md:mb-8 max-w-xl opacity-90">
                 {banner.subtitle}
               </p>
             )}
@@ -83,7 +83,7 @@ export function HeroBanner({ banners }: HeroBannerProps) {
                 <Button
                   asChild
                   size="lg"
-                  className="h-12 px-7 text-base text-white font-semibold shadow-lg"
+                  className="h-9 px-5 text-sm md:h-12 md:px-7 md:text-base text-white font-semibold shadow-lg"
                   style={{ backgroundColor: "#0066BA" }}
                 >
                   <Link href={banner.ctaLink}>{banner.ctaText}</Link>

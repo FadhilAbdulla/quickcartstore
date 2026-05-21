@@ -65,7 +65,7 @@ export function ProductDetailClient({ product, related }: ProductDetailClientPro
     <div className="min-h-screen py-8">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
         {/* Breadcrumb */}
-        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-8">
+        <nav className="flex items-center gap-2 text-sm text-gray-500 mb-4 md:mb-8 overflow-x-auto">
           <Link href="/" className="hover:text-white transition-colors">Home</Link>
           <ChevronRight className="h-3.5 w-3.5" />
           <Link href="/products" className="hover:text-white transition-colors">Products</Link>
@@ -77,7 +77,7 @@ export function ProductDetailClient({ product, related }: ProductDetailClientPro
           <span className="text-gray-400 truncate max-w-[200px]">{product.name}</span>
         </nav>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-12">
           {/* Images */}
           <div>
             {/* Main Image */}
@@ -239,7 +239,7 @@ export function ProductDetailClient({ product, related }: ProductDetailClientPro
 
         {/* Full Specs Table */}
         {specEntries.length > 0 && (
-          <div className="mt-16">
+          <div className="mt-8 md:mt-16">
             <h2 className="text-xl font-bold text-white mb-6">Full Specifications</h2>
             <div className="rounded-xl border border-[#1e1e1e] overflow-hidden">
               <table className="w-full text-sm">

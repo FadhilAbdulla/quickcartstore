@@ -234,8 +234,9 @@ export function CategoryBar() {
           {CATEGORY_NAV.map((cat) => {
             const isActive = activeSlug === cat.slug
             return (
-              <button
+              <a
                 key={cat.slug}
+                href={`/products?category=${cat.slug}`}
                 onMouseEnter={() => handleMouseEnter(cat.slug)}
                 className="flex items-center gap-1 px-2.5 py-3 text-sm font-medium whitespace-nowrap transition-all shrink-0 border-b-2"
                 style={{
@@ -247,13 +248,13 @@ export function CategoryBar() {
                 <span className="text-sm leading-none">{cat.icon}</span>
                 <span>{cat.name}</span>
                 <ChevronDown
-                  className="h-3 w-3 shrink-0 transition-transform"
+                  className="hidden sm:block h-3 w-3 shrink-0 transition-transform"
                   style={{
                     color: isActive ? "#0066BA" : "#94a3b8",
                     transform: isActive ? "rotate(180deg)" : "none",
                   }}
                 />
-              </button>
+              </a>
             )
           })}
 
@@ -274,10 +275,10 @@ export function CategoryBar() {
         </div>
       </div>
 
-      {/* Mega-menu dropdown */}
+      {/* Mega-menu dropdown — desktop only */}
       {active && (
         <div
-          className="absolute left-0 right-0 shadow-xl z-40 border-b"
+          className="hidden md:block absolute left-0 right-0 shadow-xl z-40 border-b"
           style={{ backgroundColor: "#051e44", borderColor: "#05193d" }}
           onMouseEnter={() => { if (timerRef.current) clearTimeout(timerRef.current) }}
           onMouseLeave={handleMouseLeave}

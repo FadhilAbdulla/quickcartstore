@@ -117,12 +117,12 @@ export default function CheckoutPage() {
   }
 
   return (
-    <div className="min-h-screen py-10">
+    <div className="min-h-screen py-6 md:py-10">
       <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
-        <Link href="/cart" className="flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-8 transition-colors">
+        <Link href="/cart" className="flex items-center gap-2 text-gray-500 hover:text-white text-sm mb-5 md:mb-8 transition-colors">
           <ArrowLeft className="h-4 w-4" />Back to Cart
         </Link>
-        <h1 className="text-3xl font-bold text-white mb-8">Checkout</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-5 md:mb-8">Checkout</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2">

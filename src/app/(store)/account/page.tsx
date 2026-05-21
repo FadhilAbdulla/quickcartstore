@@ -50,7 +50,7 @@ export default async function AccountPage() {
   }
 
   return (
-    <div className="min-h-screen py-10">
+    <div className="min-h-screen py-6 md:py-10">
       <div className="mx-auto max-w-3xl px-4 sm:px-6 lg:px-8 space-y-6">
 
         {/* Profile header */}

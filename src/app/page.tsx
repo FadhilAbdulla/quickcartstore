@@ -72,20 +72,20 @@ export default async function HomePage() {
             />
             <div className="absolute top-0 right-0 w-[500px] h-[500px] rounded-full opacity-10 blur-3xl" style={{ backgroundColor: "#0066BA" }} />
 
-            <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-16 md:py-24">
+            <div className="relative mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-8 sm:py-14 md:py-24">
               <div className="max-w-2xl">
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 text-blue-100 text-xs font-medium mb-6">
+                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full border border-white/20 bg-white/10 text-blue-100 text-xs font-medium mb-4 md:mb-6">
                   <span className="relative flex h-2 w-2">
                     <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-blue-300 opacity-75" />
                     <span className="relative inline-flex rounded-full h-2 w-2 bg-blue-200" />
                   </span>
                   UAE&apos;s #1 IT Store — Free Delivery Today
                 </div>
-                <h1 className="text-5xl md:text-6xl font-bold text-white leading-tight tracking-tight mb-5">
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight tracking-tight mb-3 md:mb-5">
                   Your One-Stop<br />
                   <span style={{ color: "#4da6e8" }}>IT Store.</span>
                 </h1>
-                <p className="text-blue-200 text-lg leading-relaxed mb-8 max-w-xl">
+                <p className="text-blue-200 text-sm sm:text-base md:text-lg leading-relaxed mb-5 md:mb-8 max-w-xl">
                   Laptops, gaming rigs, monitors, networking, components and more — all authentic, all delivered fast across the UAE.
                 </p>
                 <div className="flex flex-wrap gap-3">
@@ -96,7 +96,7 @@ export default async function HomePage() {
                     <Link href="/products?featured=true">🏷️ View Deals</Link>
                   </Button>
                 </div>
-                <div className="flex flex-wrap gap-8 mt-10 pt-8 border-t border-white/10">
+                <div className="flex flex-wrap gap-5 sm:gap-8 mt-6 md:mt-10 pt-6 md:pt-8 border-t border-white/10">
                   {[
                     { value: "5000+", label: "IT Products" },
                     { value: "50K+", label: "Happy Customers" },
@@ -115,11 +115,11 @@ export default async function HomePage() {
         )}
 
         {/* ── Shop by Category ── */}
-        <section className="py-14 border-t border-[#dde6f0] bg-[#f5f7fb]">
+        <section className="py-8 sm:py-14 border-t border-[#dde6f0] bg-[#f5f7fb]">
           <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-            <div className="flex items-end justify-between mb-8">
+            <div className="flex items-end justify-between mb-5 sm:mb-8">
               <div>
-                <h2 className="text-2xl font-bold" style={{ color: "#072654" }}>Shop by Category</h2>
+                <h2 className="text-xl sm:text-2xl font-bold" style={{ color: "#072654" }}>Shop by Category</h2>
                 <p className="text-gray-500 text-sm mt-1">Everything your business and home needs</p>
               </div>
               <Link href="/products" className="text-sm hover:opacity-80 flex items-center gap-1 shrink-0" style={{ color: "#0066BA" }}>

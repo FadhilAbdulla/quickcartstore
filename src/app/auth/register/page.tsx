@@ -61,7 +61,7 @@ export default function RegisterPage() {
           </Link>
         </div>
 
-        <div className="bg-[#111111] rounded-2xl border border-[#1e1e1e] p-8">
+        <div className="bg-[#111111] rounded-2xl border border-[#1e1e1e] p-5 sm:p-8">
           <h1 className="text-2xl font-bold text-white mb-1">Create an account</h1>
           <p className="text-gray-500 text-sm mb-8">Join QuickCart to start shopping</p>
 

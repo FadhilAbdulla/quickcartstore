@@ -32,9 +32,9 @@ export default async function OrdersPage() {
   ])
 
   return (
-    <div className="min-h-screen py-10">
+    <div className="min-h-screen py-6 md:py-10">
       <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
-        <h1 className="text-3xl font-bold text-white mb-8">My Orders</h1>
+        <h1 className="text-2xl md:text-3xl font-bold text-white mb-5 md:mb-8">My Orders</h1>
 
         {orders.length === 0 ? (
           <div className="flex flex-col items-center justify-center py-24 text-center">
