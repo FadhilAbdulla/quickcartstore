@@ -2,7 +2,7 @@
 
 import Link from "next/link"
 import { useState, useRef, useEffect } from "react"
-import { ChevronDown } from "lucide-react"
+import { ChevronDown, MapPin } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface SubItem { label: string; href: string; bold?: boolean }
@@ -160,6 +160,47 @@ const CATEGORY_NAV = [
   },
 ]
 
+const UAE_LOCATIONS = ["Dubai", "Abu Dhabi", "Sharjah", "Ajman", "Ras Al Khaimah", "Fujairah", "Umm Al Quwain"]
+
+function LocationChip() {
+  const [open, setOpen] = useState(false)
+  const [selected, setSelected] = useState("Dubai")
+  return (
+    <div className="relative shrink-0">
+      <button
+        onClick={() => setOpen(!open)}
+        className="flex items-center gap-1 px-2.5 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap"
+        style={{ color: "#445574", backgroundColor: open ? "#eef3fa" : "transparent" }}
+        onMouseOver={(e) => { if (!open) (e.currentTarget as HTMLButtonElement).style.backgroundColor = "#f5f7fb" }}
+        onMouseOut={(e) => { if (!open) (e.currentTarget as HTMLButtonElement).style.backgroundColor = "transparent" }}
+      >
+        <MapPin className="h-3.5 w-3.5 shrink-0" style={{ color: "#0066BA" }} />
+        <span>{selected}</span>
+        <ChevronDown className="h-3 w-3 shrink-0" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.15s" }} />
+      </button>
+      {open && (
+        <div
+          className="absolute right-0 top-full mt-1 rounded-xl shadow-xl border border-[#dde6f0] overflow-hidden z-50 min-w-[160px]"
+          style={{ backgroundColor: "#fff" }}
+        >
+          {UAE_LOCATIONS.map((loc) => (
+            <button
+              key={loc}
+              onClick={() => { setSelected(loc); setOpen(false) }}
+              className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-left transition-colors hover:bg-[#eef3fa]"
+              style={{ color: selected === loc ? "#0066BA" : "#445574", fontWeight: selected === loc ? 600 : 400 }}
+            >
+              {selected === loc && <span className="w-1.5 h-1.5 rounded-full bg-[#0066BA] shrink-0" />}
+              {selected !== loc && <span className="w-1.5 h-1.5 shrink-0" />}
+              {loc}
+            </button>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export function CategoryBar() {
   const [activeSlug, setActiveSlug] = useState<string | null>(null)
   const barRef = useRef<HTMLDivElement>(null)
@@ -181,36 +222,54 @@ export function CategoryBar() {
   return (
     <div
       ref={barRef}
-      className="sticky top-16 z-30 border-b border-[#1a1a1a] bg-[#0d0d0d]/95 backdrop-blur-md"
+      className="sticky top-16 z-30 border-b"
+      style={{ backgroundColor: "#ffffff", borderColor: "#dde6f0" }}
       onMouseLeave={handleMouseLeave}
     >
       {/* Tab row */}
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center gap-0 overflow-x-auto" style={{ scrollbarWidth: "none" }}>
-          {CATEGORY_NAV.map((cat) => (
-            <button
-              key={cat.slug}
-              onMouseEnter={() => handleMouseEnter(cat.slug)}
-              className={cn(
-                "category-nav-tab flex items-center gap-1.5 px-3 py-2.5 text-sm font-medium whitespace-nowrap transition-all rounded-lg my-1 shrink-0",
-                activeSlug === cat.slug
-                  ? "text-blue-400 bg-[#1e2a3a]"
-                  : "text-gray-100 hover:bg-[#2a2a2a]"
-              )}
-            >
-              <span className="text-sm leading-none">{cat.icon}</span>
-              {cat.name}
-              <ChevronDown className={cn("h-3 w-3 transition-transform", activeSlug === cat.slug && "rotate-180")} />
-            </button>
-          ))}
+        <div className="flex items-center overflow-x-auto" style={{ scrollbarWidth: "none" }}>
 
-          <div className="ml-auto shrink-0 pl-4">
+          {/* Category tabs */}
+          {CATEGORY_NAV.map((cat) => {
+            const isActive = activeSlug === cat.slug
+            return (
+              <button
+                key={cat.slug}
+                onMouseEnter={() => handleMouseEnter(cat.slug)}
+                className="flex items-center gap-1 px-2.5 py-3 text-sm font-medium whitespace-nowrap transition-all shrink-0 border-b-2"
+                style={{
+                  color: isActive ? "#0066BA" : "#445574",
+                  borderBottomColor: isActive ? "#0066BA" : "transparent",
+                  backgroundColor: "transparent",
+                }}
+              >
+                <span className="text-sm leading-none">{cat.icon}</span>
+                <span>{cat.name}</span>
+                <ChevronDown
+                  className="h-3 w-3 shrink-0 transition-transform"
+                  style={{
+                    color: isActive ? "#0066BA" : "#94a3b8",
+                    transform: isActive ? "rotate(180deg)" : "none",
+                  }}
+                />
+              </button>
+            )
+          })}
+
+          {/* Spacer */}
+          <div className="flex-1" />
+
+          {/* Right-side utility links */}
+          <div className="flex items-center gap-1 shrink-0 pl-2 border-l ml-2" style={{ borderColor: "#e2ecf5" }}>
             <Link
               href="/products?featured=true"
-              className="category-nav-tab flex items-center gap-1 px-3 py-2.5 text-sm font-semibold text-yellow-400 hover:bg-[#2a2a2a] whitespace-nowrap transition-all rounded-lg my-1"
+              className="flex items-center gap-1 px-2.5 py-3 text-sm font-semibold whitespace-nowrap transition-colors"
+              style={{ color: "#b45309" }}
             >
               🏷️ Deals
             </Link>
+            <LocationChip />
           </div>
         </div>
       </div>
@@ -218,29 +277,36 @@ export function CategoryBar() {
       {/* Mega-menu dropdown */}
       {active && (
         <div
-          className="absolute left-0 right-0 bg-[#0f0f0f] border-b border-[#1e1e1e] shadow-2xl shadow-black/60 z-40"
+          className="absolute left-0 right-0 shadow-xl z-40 border-b"
+          style={{ backgroundColor: "#051e44", borderColor: "#05193d" }}
           onMouseEnter={() => { if (timerRef.current) clearTimeout(timerRef.current) }}
           onMouseLeave={handleMouseLeave}
         >
-          <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-6">
+          <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-5">
             <div className="grid grid-cols-3 gap-8">
-              {/* Sub-types column */}
+              {/* Sub-types */}
               <div>
-                <p className="text-[10px] text-gray-600 font-semibold uppercase tracking-widest mb-3">
+                <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: "#4da6e8" }}>
                   Browse by Type
                 </p>
-                <ul className="space-y-1">
+                <ul className="space-y-0.5">
                   {active.types.map((item) => (
                     <li key={item.label}>
                       <Link
                         href={item.href}
                         onClick={() => setActiveSlug(null)}
-                        className={cn(
-                          "block py-1.5 text-sm transition-colors",
-                          item.bold
-                            ? "text-blue-400 hover:text-blue-300 font-medium"
-                            : "text-gray-200 hover:text-white"
-                        )}
+                        className="block py-1.5 px-2 rounded text-sm transition-colors"
+                        style={{ color: item.bold ? "#4da6e8" : "#bfdbfe" }}
+                        onMouseOver={(e) => {
+                          const el = e.currentTarget as HTMLAnchorElement
+                          el.style.color = "#ffffff"
+                          el.style.backgroundColor = "rgba(255,255,255,0.06)"
+                        }}
+                        onMouseOut={(e) => {
+                          const el = e.currentTarget as HTMLAnchorElement
+                          el.style.color = item.bold ? "#4da6e8" : "#bfdbfe"
+                          el.style.backgroundColor = "transparent"
+                        }}
                       >
                         {item.label}
                       </Link>
@@ -249,51 +315,70 @@ export function CategoryBar() {
                 </ul>
               </div>
 
-              {/* Brands column */}
+              {/* Brands */}
               <div>
-                <p className="text-[10px] text-gray-600 font-semibold uppercase tracking-widest mb-3">
+                <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: "#4da6e8" }}>
                   Top Brands
                 </p>
-                <ul className="space-y-1">
+                <ul className="space-y-0.5">
                   {active.brands.map((brand) => (
                     <li key={brand.href}>
                       <Link
                         href={brand.href}
                         onClick={() => setActiveSlug(null)}
-                        className="flex items-center gap-2.5 py-1.5 text-sm text-gray-200 hover:text-white transition-colors group"
+                        className="flex items-center gap-2.5 py-1.5 px-2 rounded text-sm transition-colors"
+                        style={{ color: "#bfdbfe" }}
+                        onMouseOver={(e) => {
+                          const el = e.currentTarget as HTMLAnchorElement
+                          el.style.color = "#ffffff"
+                          el.style.backgroundColor = "rgba(255,255,255,0.06)"
+                        }}
+                        onMouseOut={(e) => {
+                          const el = e.currentTarget as HTMLAnchorElement
+                          el.style.color = "#bfdbfe"
+                          el.style.backgroundColor = "transparent"
+                        }}
                       >
-                        <div className="h-5 w-5 rounded bg-blue-600/15 border border-blue-600/20 flex items-center justify-center shrink-0">
-                          <span className="text-blue-400 font-bold text-[9px]">{brand.name[0]}</span>
+                        <div
+                          className="h-5 w-5 rounded flex items-center justify-center shrink-0"
+                          style={{ backgroundColor: "rgba(0,102,186,0.3)", border: "1px solid rgba(0,102,186,0.4)" }}
+                        >
+                          <span className="font-bold text-[9px]" style={{ color: "#4da6e8" }}>{brand.name[0]}</span>
                         </div>
-                        <span className="group-hover:text-white">{brand.name}</span>
+                        {brand.name}
                       </Link>
                     </li>
                   ))}
                 </ul>
               </div>
 
-              {/* Featured / CTA column */}
+              {/* Quick access */}
               <div className="flex flex-col justify-between">
                 <div>
-                  <p className="text-[10px] text-gray-600 font-semibold uppercase tracking-widest mb-3">
+                  <p className="text-[10px] font-semibold uppercase tracking-widest mb-3" style={{ color: "#4da6e8" }}>
                     Quick Access
                   </p>
                   <Link
                     href={`/products?category=${active.slug}`}
                     onClick={() => setActiveSlug(null)}
-                    className="block p-4 rounded-xl bg-gradient-to-br from-blue-900/40 to-blue-950/60 border border-blue-800/30 hover:border-blue-600/50 transition-all group"
+                    className="block p-4 rounded-xl transition-all"
+                    style={{
+                      background: "linear-gradient(135deg, rgba(0,102,186,0.3) 0%, rgba(7,38,84,0.6) 100%)",
+                      border: "1px solid rgba(0,102,186,0.3)",
+                    }}
+                    onMouseOver={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,102,186,0.6)" }}
+                    onMouseOut={(e) => { (e.currentTarget as HTMLAnchorElement).style.borderColor = "rgba(0,102,186,0.3)" }}
                   >
-                    <span className="text-3xl">{active.icon}</span>
+                    <span className="text-2xl">{active.icon}</span>
                     <p className="text-white font-semibold text-sm mt-2">All {active.name}</p>
-                    <p className="text-blue-400/70 text-xs mt-1 group-hover:text-blue-400 transition-colors">
-                      Browse complete range →
-                    </p>
+                    <p className="text-sm mt-1" style={{ color: "#4da6e8" }}>Browse complete range →</p>
                   </Link>
                 </div>
                 <Link
                   href="/products?featured=true"
                   onClick={() => setActiveSlug(null)}
-                  className="mt-4 block px-4 py-2.5 rounded-lg border border-yellow-600/30 bg-yellow-950/20 text-yellow-400 text-xs font-medium hover:bg-yellow-950/40 transition-colors text-center"
+                  className="mt-3 block px-4 py-2 rounded-lg text-xs font-medium text-center transition-colors"
+                  style={{ border: "1px solid rgba(251,191,36,0.35)", backgroundColor: "rgba(251,191,36,0.1)", color: "#fbbf24" }}
                 >
                   🏷️ View Deals &amp; Offers
                 </Link>

@@ -16,7 +16,7 @@ export default async function StoreLayout({
     <SessionProvider>
       <Navbar session={session} />
       <CategoryBar />
-      <main className="flex-1">{children}</main>
+      <main className="flex-1 store-content">{children}</main>
       <Footer />
       <CartDrawer />
     </SessionProvider>

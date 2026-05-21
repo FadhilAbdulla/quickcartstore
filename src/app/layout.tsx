@@ -20,12 +20,31 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: "QuickCart - IT Products Store in UAE",
+    default: "QuickCart — IT Products Store Dubai, UAE",
     template: "%s | QuickCart UAE",
   },
   description:
-    "Shop laptops, monitors, networking, PC components, printers, storage and more. Authentic products, fast delivery across UAE.",
-  keywords: ["IT store UAE", "laptops Dubai", "monitors UAE", "networking equipment UAE", "PC components UAE"],
+    "Shop laptops, desktops, gaming PCs, monitors, networking, PC components, printers, storage and more. Authentic products with UAE warranty. Fast delivery across Dubai and UAE.",
+  keywords: [
+    "IT store Dubai", "laptops Dubai", "gaming PC Dubai", "monitors UAE",
+    "networking equipment UAE", "PC components Dubai", "buy laptop UAE",
+    "computer store Dubai", "HP Dell Lenovo dealer UAE", "ASUS ROG Dubai",
+  ],
+  openGraph: {
+    type: "website",
+    locale: "en_AE",
+    siteName: "QuickCart UAE",
+    title: "QuickCart — IT Products Store Dubai, UAE",
+    description: "Laptops, gaming rigs, monitors, networking, components and more — authentic, fast delivery across UAE.",
+    images: [{ url: "/logo.svg", width: 799, height: 145, alt: "QuickCart UAE" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "QuickCart — IT Products Store Dubai, UAE",
+    description: "Laptops, gaming rigs, monitors, networking, components and more — authentic, fast delivery across UAE.",
+  },
+  robots: { index: true, follow: true },
+  metadataBase: new URL("https://quickcart.ae"),
 }
 
 export default async function RootLayout({
@@ -33,29 +52,22 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
-  const [themeSetting, currencySetting] = await Promise.all([
-    db.settings.findUnique({ where: { key: "theme" } }),
-    db.settings.findUnique({ where: { key: "currency" } }),
-  ])
-  const theme = themeSetting?.value === "light" ? "light" : "dark"
+  const currencySetting = await db.settings.findUnique({ where: { key: "currency" } })
   const currency = currencySetting?.value ?? "AED"
 
   return (
-    <html lang="en" data-theme={theme} className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col bg-[#0a0a0a] text-white">
+    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}>
+      <body className="min-h-full flex flex-col bg-[#f5f7fb] text-[#072654]">
         <CurrencyProvider currency={currency}>
-        <TopLoader color={theme === "light" ? "#2563eb" : "#ffffff"} height={2} />
-        {children}
-        <Toaster
-          theme={theme as "dark" | "light"}
-          position="bottom-right"
-          toastOptions={{
-            style:
-              theme === "light"
-                ? { background: "#ffffff", border: "1px solid #e5e5e5", color: "#111111" }
-                : { background: "#111111", border: "1px solid #2a2a2a", color: "#ffffff" },
-          }}
-        />
+          <TopLoader color="#0066BA" height={3} />
+          {children}
+          <Toaster
+            theme="light"
+            position="bottom-right"
+            toastOptions={{
+              style: { background: "#ffffff", border: "1px solid #dde6f0", color: "#072654" },
+            }}
+          />
         </CurrencyProvider>
       </body>
     </html>

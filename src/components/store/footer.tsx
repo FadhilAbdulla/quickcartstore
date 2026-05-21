@@ -1,35 +1,37 @@
 import Link from "next/link"
-import { Monitor, MapPin, Mail, Phone } from "lucide-react"
+import Image from "next/image"
+import { MapPin, Mail, Phone } from "lucide-react"
 
 export function Footer() {
   return (
-    <footer className="border-t border-[#1e1e1e] bg-[#080808]">
+    <footer style={{ backgroundColor: "#072654" }} className="border-t border-[#05193d]">
       <div className="mx-auto max-w-[1440px] px-4 sm:px-6 lg:px-8 py-14">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-blue-600">
-                <Monitor className="h-4 w-4 text-white" />
-              </div>
-              <span className="font-bold text-white text-lg">
-                Quick<span className="text-blue-400">Cart</span>
-              </span>
+            <Link href="/" className="flex items-center mb-4">
+              <Image
+                src="/logo-white.svg"
+                alt="QuickCart UAE"
+                width={160}
+                height={30}
+                className="h-8 w-auto"
+              />
             </Link>
-            <p className="text-gray-500 text-sm leading-relaxed">
+            <p className="text-blue-200 text-sm leading-relaxed">
               UAE&apos;s premier destination for IT products. Laptops, monitors, networking, components and more — authentic, fast delivery.
             </p>
             <div className="mt-5 space-y-2">
-              <div className="flex items-center gap-2 text-gray-500 text-xs">
-                <MapPin className="h-3 w-3 text-blue-500 shrink-0" />
+              <div className="flex items-center gap-2 text-blue-300 text-xs">
+                <MapPin className="h-3 w-3 shrink-0" style={{ color: "#0066BA" }} />
                 Dubai, United Arab Emirates
               </div>
-              <div className="flex items-center gap-2 text-gray-500 text-xs">
-                <Mail className="h-3 w-3 text-blue-500 shrink-0" />
+              <div className="flex items-center gap-2 text-blue-300 text-xs">
+                <Mail className="h-3 w-3 shrink-0" style={{ color: "#0066BA" }} />
                 support@quickcart.ae
               </div>
-              <div className="flex items-center gap-2 text-gray-500 text-xs">
-                <Phone className="h-3 w-3 text-blue-500 shrink-0" />
+              <div className="flex items-center gap-2 text-blue-300 text-xs">
+                <Phone className="h-3 w-3 shrink-0" style={{ color: "#0066BA" }} />
                 +971 4 000 0000
               </div>
             </div>
@@ -46,9 +48,11 @@ export function Footer() {
                 { href: "/products?category=networking", label: "Networking" },
                 { href: "/products?category=pc-components", label: "PC Components" },
                 { href: "/products?category=peripherals", label: "Peripherals" },
+                { href: "/products?category=storage", label: "Storage" },
+                { href: "/products?category=printers", label: "Printers" },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-gray-500 text-sm hover:text-white transition-colors">
+                  <Link href={link.href} className="text-blue-300 text-sm hover:text-white transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -68,7 +72,7 @@ export function Footer() {
                 { href: "/products?featured=true", label: "🏷️ Deals" },
               ].map((link) => (
                 <li key={link.href}>
-                  <Link href={link.href} className="text-gray-500 text-sm hover:text-white transition-colors">
+                  <Link href={link.href} className="text-blue-300 text-sm hover:text-white transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -81,14 +85,15 @@ export function Footer() {
             <h4 className="text-white font-semibold text-sm mb-4">Support</h4>
             <ul className="space-y-2.5">
               {[
+                { href: "/about", label: "About Us" },
+                { href: "/support/contact", label: "Contact Us" },
                 { href: "/support/shipping-policy", label: "Shipping Policy" },
                 { href: "/support/return-policy", label: "Return Policy" },
                 { href: "/support/warranty", label: "Warranty" },
-                { href: "/support/contact", label: "Contact Us" },
                 { href: "/support/faq", label: "FAQ" },
               ].map((link) => (
                 <li key={link.label}>
-                  <Link href={link.href} className="text-gray-500 text-sm hover:text-white transition-colors">
+                  <Link href={link.href} className="text-blue-300 text-sm hover:text-white transition-colors">
                     {link.label}
                   </Link>
                 </li>
@@ -97,17 +102,17 @@ export function Footer() {
           </div>
         </div>
 
-        <div className="mt-12 pt-6 border-t border-[#1a1a1a] flex flex-col sm:flex-row items-center justify-between gap-4">
-          <p className="text-gray-600 text-xs" suppressHydrationWarning>
+        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+          <p className="text-blue-400 text-xs" suppressHydrationWarning>
             © {new Date().getFullYear()} QuickCart. All rights reserved. Dubai, UAE.
           </p>
           <div className="flex items-center gap-4">
-            <span className="text-gray-600 text-xs">We accept:</span>
+            <span className="text-blue-400 text-xs">We accept:</span>
             <div className="flex gap-2">
               {["VISA", "MC", "AMEX", "Apple Pay"].map((method) => (
                 <span
                   key={method}
-                  className="px-2 py-0.5 rounded border border-[#2a2a2a] text-gray-600 text-[10px] font-medium"
+                  className="px-2 py-0.5 rounded border border-white/20 text-blue-300 text-[10px] font-medium"
                 >
                   {method}
                 </span>

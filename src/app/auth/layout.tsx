@@ -10,5 +10,5 @@ export default async function AuthLayout({
   if (session?.user) {
     redirect("/")
   }
-  return <>{children}</>
+  return <div className="auth-content">{children}</div>
 }

@@ -203,6 +203,21 @@ model Settings {
   updatedAt DateTime @updatedAt
 }
 
+model Banner {
+  id        String   @id @default(cuid())
+  title     String
+  subtitle  String?
+  ctaText   String?
+  ctaLink   String?
+  image     String?
+  bgFrom    String   @default("#072654")
+  bgTo      String   @default("#0a3d7a")
+  isActive  Boolean  @default(true)
+  sortOrder Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 model Return {
   id           String       @id @default(cuid())
   orderId      String

@@ -47,7 +47,7 @@ export function ProductCard({ product }: ProductCardProps) {
 
   return (
     <Link href={`/products/${product.slug}`} className="group block h-full">
-      <div className="relative rounded-2xl border border-[#1e1e1e] bg-[#111111] overflow-hidden transition-all duration-300 hover:border-blue-600/40 hover:shadow-xl hover:shadow-blue-950/20 hover:-translate-y-1 flex flex-col h-full">
+      <div className="relative rounded-2xl border border-[#dde6f0] bg-white overflow-hidden transition-all duration-300 hover:border-[#0066BA]/40 hover:shadow-lg hover:shadow-blue-100/60 hover:-translate-y-1 flex flex-col h-full">
 
         {/* Badges — overlaid on image */}
         <div className="absolute top-3 left-3 z-10 flex flex-col gap-1.5">
@@ -64,7 +64,7 @@ export function ProductCard({ product }: ProductCardProps) {
         </div>
 
         {/* Image — fixed height, no text overflow */}
-        <div className="relative h-48 bg-[#0f0f0f] flex items-center justify-center shrink-0">
+        <div className="relative h-48 bg-[#f5f7fb] flex items-center justify-center shrink-0">
           {showImage ? (
             <img
               src={product.images[0]}
@@ -73,7 +73,7 @@ export function ProductCard({ product }: ProductCardProps) {
               className="h-full w-full object-contain p-5 transition-transform duration-500 group-hover:scale-105"
             />
           ) : (
-            <div className="flex flex-col items-center gap-2 text-gray-700">
+            <div className="flex flex-col items-center gap-2 text-gray-400">
               <ShoppingCart className="h-10 w-10" />
               <span className="text-xs">No image</span>
             </div>
@@ -82,8 +82,8 @@ export function ProductCard({ product }: ProductCardProps) {
 
         {/* Content */}
         <div className="p-4 flex flex-col flex-1">
-          <p className="text-sm text-blue-400 font-semibold mb-1 uppercase tracking-wide">{product.brand.name}</p>
-          <h3 className="text-white font-medium text-base leading-snug line-clamp-2 mb-3 group-hover:text-blue-100 transition-colors min-h-[2.75rem]">
+          <p className="text-sm font-semibold mb-1 uppercase tracking-wide" style={{ color: "#0066BA" }}>{product.brand.name}</p>
+          <h3 className="font-medium text-base leading-snug line-clamp-2 mb-3 transition-colors min-h-[2.75rem]" style={{ color: "#072654" }}>
             {product.name}
           </h3>
 
@@ -91,17 +91,17 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.specs && (
             <div className="flex flex-wrap gap-1 mb-3 min-h-[1.5rem]">
               {product.specs.ram && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-300">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[#eef3fa] border border-[#dde6f0] text-[#445574]">
                   {product.specs.ram}
                 </span>
               )}
               {product.specs.storage && (
-                <span className="text-xs px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-300">
+                <span className="text-xs px-2 py-0.5 rounded-full bg-[#eef3fa] border border-[#dde6f0] text-[#445574]">
                   {product.specs.storage}
                 </span>
               )}
               {product.specs.processor && (
-                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#1a1a1a] border border-[#2a2a2a] text-gray-400 max-w-[130px] truncate">
+                <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#eef3fa] border border-[#dde6f0] text-[#445574] max-w-[130px] truncate">
                   {product.specs.processor}
                 </span>
               )}
@@ -111,15 +111,15 @@ export function ProductCard({ product }: ProductCardProps) {
           {/* Push price + stock + button to bottom */}
           <div className="mt-auto space-y-3">
             <div className="flex items-end gap-2">
-              <span className="text-white font-bold text-xl">{formatPrice(price, currency)}</span>
+              <span className="font-bold text-xl" style={{ color: "#072654" }}>{formatPrice(price, currency)}</span>
               {comparePrice && comparePrice > price && (
-                <span className="text-gray-500 text-sm line-through mb-0.5">{formatPrice(comparePrice, currency)}</span>
+                <span className="text-gray-400 text-sm line-through mb-0.5">{formatPrice(comparePrice, currency)}</span>
               )}
             </div>
 
             <div className="flex items-center gap-1.5">
               <div className={`h-1.5 w-1.5 rounded-full shrink-0 ${product.stock > 10 ? "bg-green-500" : product.stock > 0 ? "bg-yellow-500" : "bg-red-500"}`} />
-              <span className="text-sm text-gray-300">
+              <span className="text-sm text-gray-500">
                 {product.stock > 10 ? "In Stock" : product.stock > 0 ? `Only ${product.stock} left` : "Out of Stock"}
               </span>
             </div>
