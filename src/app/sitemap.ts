@@ -3,6 +3,7 @@ import { db } from "@/lib/db"
 
 const BASE = "https://quickcart.ae"
 
+
 const staticRoutes: MetadataRoute.Sitemap = [
   { url: BASE, changeFrequency: "daily", priority: 1.0 },
   { url: `${BASE}/products`, changeFrequency: "daily", priority: 0.9 },
@@ -15,15 +16,10 @@ const staticRoutes: MetadataRoute.Sitemap = [
 ]
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [products, categories] = await Promise.all([
-    db.product.findMany({
-      where: { isActive: true },
-      select: { slug: true, updatedAt: true },
-    }),
-    db.category.findMany({
-      select: { slug: true },
-    }),
-  ])
+  const products = await db.product.findMany({
+    where: { isActive: true },
+    select: { slug: true, updatedAt: true },
+  })
 
   const productRoutes: MetadataRoute.Sitemap = products.map((p) => ({
     url: `${BASE}/products/${p.slug}`,
@@ -32,11 +28,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.8,
   }))
 
-  const categoryRoutes: MetadataRoute.Sitemap = categories.map((c) => ({
-    url: `${BASE}/products?category=${c.slug}`,
-    changeFrequency: "weekly",
-    priority: 0.7,
-  }))
-
-  return [...staticRoutes, ...productRoutes, ...categoryRoutes]
+  return [...staticRoutes, ...productRoutes]
 }

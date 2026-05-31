@@ -31,13 +31,20 @@ export const metadata: Metadata = {
     "networking equipment UAE", "PC components Dubai", "buy laptop UAE",
     "computer store Dubai", "HP Dell Lenovo dealer UAE", "ASUS ROG Dubai",
   ],
+  icons: {
+    icon: [
+      { url: "/logo-icon.svg", type: "image/svg+xml" },
+    ],
+    apple: "/logo-icon.svg",
+    shortcut: "/logo-icon.svg",
+  },
   openGraph: {
     type: "website",
     locale: "en_AE",
     siteName: "QuickCart UAE",
     title: "QuickCart — IT Products Store Dubai, UAE",
     description: "Laptops, gaming rigs, monitors, networking, components and more — authentic, fast delivery across UAE.",
-    images: [{ url: "/logo.svg", width: 799, height: 145, alt: "QuickCart UAE" }],
+    images: [{ url: "/og-image.png", width: 1200, height: 630, alt: "QuickCart UAE" }],
   },
   twitter: {
     card: "summary_large_image",
