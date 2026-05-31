@@ -1,5 +1,15 @@
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import Link from "next/link"
 import { RotateCcw, CheckCircle, XCircle, Clock } from "lucide-react"
+
+export const metadata: Metadata = buildMetadata({
+  title: "Return Policy",
+  description:
+    "QuickCart UAE return policy — 14-day returns, free pickup, 3–5 day refund processing. Easy returns for defective or incorrect products delivered across UAE.",
+  path: "/support/return-policy",
+  keywords: ["return policy UAE", "IT product returns Dubai", "refund policy QuickCart"],
+})
 
 export default function ReturnPolicyPage() {
   return (

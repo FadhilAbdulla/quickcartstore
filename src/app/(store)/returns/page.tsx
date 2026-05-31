@@ -1,6 +1,14 @@
 export const dynamic = "force-dynamic"
 
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import { auth } from "@/lib/auth"
+
+export const metadata: Metadata = buildMetadata({
+  title: "My Returns",
+  path: "/returns",
+  noindex: true,
+})
 import { db } from "@/lib/db"
 import { redirect } from "next/navigation"
 import Link from "next/link"

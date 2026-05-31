@@ -1,5 +1,7 @@
 export const dynamic = "force-dynamic"
 
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import { db } from "@/lib/db"
 import { ProductCard } from "@/components/store/product-card"
 import { ProductSortSelect } from "@/components/store/product-sort-select"
@@ -14,6 +16,65 @@ interface SearchParams {
   sort?: string
   minPrice?: string
   maxPrice?: string
+}
+
+export async function generateMetadata({
+  searchParams,
+}: {
+  searchParams: Promise<SearchParams>
+}): Promise<Metadata> {
+  const params = await searchParams
+
+  if (params.search) {
+    return buildMetadata({
+      title: `Search: ${params.search}`,
+      description: `Search results for "${params.search}" — laptops, monitors, networking and more at QuickCart UAE.`,
+      path: `/products?search=${encodeURIComponent(params.search)}`,
+      noindex: true,
+    })
+  }
+
+  if (params.category) {
+    const category = await db.category.findUnique({ where: { slug: params.category } })
+    const name = category?.name ?? params.category
+    return buildMetadata({
+      title: `${name} in UAE`,
+      description: `Shop ${name} in UAE — authentic products, free delivery, UAE warranty. Browse the full range at QuickCart.`,
+      path: `/products?category=${params.category}`,
+      keywords: [`${name} Dubai`, `buy ${name} UAE`, `${name} price UAE`],
+    })
+  }
+
+  if (params.brand) {
+    return buildMetadata({
+      title: `${params.brand} Products in UAE`,
+      description: `Shop ${params.brand} laptops, PCs, monitors and accessories in UAE. Authentic, UAE warranty, free delivery at QuickCart.`,
+      path: `/products?brand=${encodeURIComponent(params.brand)}`,
+      keywords: [`${params.brand} Dubai`, `buy ${params.brand} UAE`, `${params.brand} price UAE`],
+    })
+  }
+
+  if (params.minPrice || params.maxPrice || params.sort) {
+    return buildMetadata({
+      title: "All Products",
+      path: "/products",
+      noindex: true,
+    })
+  }
+
+  return buildMetadata({
+    title: "All IT Products",
+    description:
+      "Shop the full range of IT products in UAE — laptops, gaming PCs, monitors, networking, components, storage and more. Free delivery, UAE warranty.",
+    path: "/products",
+    keywords: [
+      "IT products Dubai",
+      "buy laptop UAE",
+      "gaming PC UAE",
+      "monitors Dubai",
+      "networking equipment UAE",
+    ],
+  })
 }
 
 async function getProducts(params: SearchParams) {

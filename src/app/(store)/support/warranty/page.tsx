@@ -1,5 +1,20 @@
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import Link from "next/link"
 import { ShieldCheck, Wrench, AlertCircle, CheckCircle } from "lucide-react"
+
+export const metadata: Metadata = buildMetadata({
+  title: "Warranty Information",
+  description:
+    "All QuickCart UAE products come with official manufacturer warranty — Apple, Dell, HP, Lenovo, ASUS and more. Learn what's covered and how to claim.",
+  path: "/support/warranty",
+  keywords: [
+    "UAE warranty IT products",
+    "laptop warranty Dubai",
+    "manufacturer warranty UAE",
+    "Apple warranty UAE",
+  ],
+})
 
 export default function WarrantyPage() {
   return (

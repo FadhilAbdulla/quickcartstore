@@ -4,6 +4,7 @@ import { notFound } from "next/navigation"
 import { db } from "@/lib/db"
 import { ProductDetailClient } from "./product-detail-client"
 import type { Metadata } from "next"
+import { SITE, breadcrumbJsonLd } from "@/lib/seo"
 
 interface Props {
   params: Promise<{ slug: string }>
@@ -32,6 +33,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       `buy ${product.brand.name} Dubai`,
       `${product.name} Dubai`,
     ],
+    alternates: { canonical: `${SITE.url}/products/${product.slug}` },
     openGraph: {
       title,
       description,
@@ -117,11 +119,22 @@ export default async function ProductDetailPage({ params }: Props) {
     } : {}),
   }
 
+  const breadcrumb = breadcrumbJsonLd([
+    { name: "Home", url: SITE.url },
+    { name: "Products", url: `${SITE.url}/products` },
+    { name: product.category.name, url: `${SITE.url}/products?category=${product.category.slug}` },
+    { name: product.name, url: `${SITE.url}/products/${product.slug}` },
+  ])
+
   return (
     <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
       />
       <ProductDetailClient
         product={{

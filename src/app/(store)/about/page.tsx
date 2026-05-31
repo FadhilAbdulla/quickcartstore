@@ -1,8 +1,22 @@
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import { Shield, Truck, Headphones, Award, MapPin, Mail, Phone, Monitor } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
-export const metadata = { title: "About Us" }
+export const metadata: Metadata = buildMetadata({
+  title: "About QuickCart UAE",
+  description:
+    "QuickCart is Dubai's premier IT products store — 5,000+ authentic products, UAE warranty, and fast delivery across Dubai, Abu Dhabi, Sharjah and all emirates.",
+  path: "/about",
+  keywords: [
+    "about QuickCart",
+    "IT store Dubai",
+    "computer shop UAE",
+    "authorized reseller Dubai",
+    "UAE warranty IT products",
+  ],
+})
 
 const stats = [
   { value: "5,000+", label: "IT Products" },

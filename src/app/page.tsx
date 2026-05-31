@@ -1,6 +1,27 @@
 export const dynamic = "force-dynamic"
 
+import type { Metadata } from "next"
+import { buildMetadata, organizationJsonLd, websiteJsonLd } from "@/lib/seo"
 import Link from "next/link"
+
+export const metadata: Metadata = buildMetadata({
+  title: "QuickCart — IT Products Store Dubai, UAE",
+  description:
+    "Shop laptops, desktops, gaming PCs, monitors, networking, PC components, printers, storage and more. Authentic products with UAE warranty. Fast delivery across Dubai and UAE.",
+  path: "/",
+  keywords: [
+    "IT store Dubai",
+    "laptops Dubai",
+    "gaming PC Dubai",
+    "monitors UAE",
+    "networking equipment UAE",
+    "PC components Dubai",
+    "buy laptop UAE",
+    "computer store Dubai",
+    "HP Dell Lenovo dealer UAE",
+    "ASUS ROG Dubai",
+  ],
+})
 import { ArrowRight, Shield, Truck, Headphones, Award, ChevronRight } from "lucide-react"
 import { db } from "@/lib/db"
 import { ProductCard } from "@/components/store/product-card"
@@ -58,6 +79,14 @@ export default async function HomePage() {
 
   return (
     <StoreLayoutWrapper>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd()) }}
+      />
       <div className="min-h-screen">
 
         {/* ── Hero Banner Carousel ── */}

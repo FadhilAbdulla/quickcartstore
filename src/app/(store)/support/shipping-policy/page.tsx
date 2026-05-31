@@ -1,5 +1,15 @@
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import Link from "next/link"
 import { Truck, Clock, MapPin, Package, AlertCircle } from "lucide-react"
+
+export const metadata: Metadata = buildMetadata({
+  title: "Shipping Policy",
+  description:
+    "Free delivery across UAE — same-day in Dubai, next-day to Abu Dhabi & Sharjah. QuickCart ships all IT products within the UAE with no minimum order.",
+  path: "/support/shipping-policy",
+  keywords: ["free shipping UAE", "delivery Dubai IT products", "QuickCart shipping policy"],
+})
 
 export default function ShippingPolicyPage() {
   return (

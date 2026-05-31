@@ -1,6 +1,14 @@
+import type { Metadata } from "next"
+import { buildMetadata } from "@/lib/seo"
 import { auth } from "@/lib/auth"
 import { redirect } from "next/navigation"
 import { AdminSidebar } from "@/components/admin/sidebar"
+
+export const metadata: Metadata = buildMetadata({
+  title: "Admin",
+  path: "/admin",
+  noindex: true,
+})
 
 export default async function AdminLayout({
   children,
