@@ -1,6 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
-import { MapPin, Mail, Phone } from "lucide-react"
+import { MapPin, Mail } from "lucide-react"
 
 export function Footer() {
   return (
@@ -28,11 +28,7 @@ export function Footer() {
               </div>
               <div className="flex items-center gap-2 text-blue-300 text-xs">
                 <Mail className="h-3 w-3 shrink-0" style={{ color: "#0066BA" }} />
-                support@quickcart.ae
-              </div>
-              <div className="flex items-center gap-2 text-blue-300 text-xs">
-                <Phone className="h-3 w-3 shrink-0" style={{ color: "#0066BA" }} />
-                +971 4 000 0000
+                support@quickcartstore.ae
               </div>
             </div>
           </div>
@@ -86,6 +82,7 @@ export function Footer() {
             <ul className="space-y-2.5">
               {[
                 { href: "/about", label: "About Us" },
+                { href: "/blog", label: "Blog" },
                 { href: "/support/contact", label: "Contact Us" },
                 { href: "/support/shipping-policy", label: "Shipping Policy" },
                 { href: "/support/return-policy", label: "Return Policy" },

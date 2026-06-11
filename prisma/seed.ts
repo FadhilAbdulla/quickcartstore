@@ -60,9 +60,9 @@ async function main() {
   // Users
   const adminPassword = await bcrypt.hash("Admin@123", 12)
   const admin = await db.user.upsert({
-    where: { email: "admin@quickcart.ae" },
+    where: { email: "admin@quickcartstore.ae" },
     update: {},
-    create: { name: "Admin User", email: "admin@quickcart.ae", password: adminPassword, role: "ADMIN" },
+    create: { name: "Admin User", email: "admin@quickcartstore.ae", password: adminPassword, role: "ADMIN" },
   })
   console.log("✅ Admin user:", admin.email)
 
@@ -802,8 +802,603 @@ async function main() {
   }
   console.log("✅ 3 hero banners seeded")
 
+  // ── Blog Posts ──────────────────────────────────────────────────────────────
+  const blogPosts = [
+    {
+      id: "blog-1",
+      slug: "best-laptops-uae-2025",
+      title: "Best Laptops to Buy in the UAE in 2025: Complete Buyer's Guide",
+      excerpt: "From budget ultrabooks to powerhouse workstations, discover the top laptops available in Dubai and the UAE with official warranty and fast delivery.",
+      tags: ["laptops", "buying guide", "Dubai", "UAE", "HP", "Dell", "Lenovo"],
+      author: "QuickCart Team",
+      content: `## Why UAE Buyers Need a Specific Laptop Guide
+
+Buying a laptop in the UAE is different from buying in Europe or the US. VAT, official warranty coverage, and regional support all matter. This guide focuses on models available with UAE warranty through authorised dealers.
+
+## Top Picks by Category
+
+### Best Overall: Dell XPS 15 (2025)
+The Dell XPS 15 remains the benchmark for premium Windows laptops. With Intel Core Ultra 9 processors, OLED display options, and up to 64GB RAM, it handles everything from creative work to enterprise tasks. Available in Dubai with 1-year Dell UAE warranty.
+
+**Price in UAE:** AED 7,499 – AED 12,999
+
+### Best for Business: HP EliteBook 840 G11
+HP's EliteBook series is the go-to choice for UAE enterprises. The G11 model features AI-powered noise cancellation, a 14-inch Sure View privacy screen, and MIL-STD-810 durability. Certified for Microsoft Teams and Zoom.
+
+**Price in UAE:** AED 5,499 – AED 8,999
+
+### Best Budget Laptop: Lenovo IdeaPad Slim 5
+For students and home users in the UAE, the Lenovo IdeaPad Slim 5 offers outstanding value. AMD Ryzen 7 processor, 16GB RAM, and 512GB SSD at an accessible price point.
+
+**Price in UAE:** AED 2,199 – AED 2,999
+
+### Best Gaming Laptop: ASUS ROG Zephyrus G14 (2025)
+The ROG Zephyrus G14 is the most popular gaming laptop among UAE gamers. It packs AMD Ryzen AI 9 and NVIDIA RTX 4070 into a portable 14-inch chassis. Supports 165Hz display refresh rate.
+
+**Price in UAE:** AED 6,499 – AED 8,499
+
+### Best MacBook Alternative: ASUS Zenbook S 16
+For creatives who want Windows performance with Mac-level build quality, the Zenbook S 16 delivers. OLED display, AMD Ryzen AI 9, and a magnesium chassis weighing just 1.5kg.
+
+**Price in UAE:** AED 5,999 – AED 7,499
+
+## What to Check Before Buying
+
+- **UAE warranty**: Always verify the warranty is for the UAE, not a grey import
+- **Keyboard layout**: Some imported models have non-Arabic keyboards
+- **Voltage**: UAE runs on 220-240V — most laptops are universal but check the adapter
+- **Service centres**: HP, Dell, Lenovo, and ASUS all have certified service centres in Dubai
+
+## Where to Buy Laptops in Dubai
+
+QuickCart UAE (www.quickcartstore.ae) stocks all major brands with official UAE warranty. Free delivery across Dubai, Abu Dhabi, Sharjah, and all seven emirates on orders above AED 200.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-2",
+      slug: "gaming-pc-build-guide-uae-2025",
+      title: "How to Build a Gaming PC in the UAE: 2025 Guide with Prices",
+      excerpt: "Step-by-step guide to building a gaming PC in Dubai and the UAE, with current component prices, import tips, and where to buy parts with UAE warranty.",
+      tags: ["gaming PC", "PC build", "GPU", "CPU", "Dubai", "components"],
+      author: "QuickCart Team",
+      content: `## Is It Worth Building a PC in the UAE?
+
+Yes — building your own gaming PC in the UAE can save you 15-25% compared to buying a pre-built system, while giving you full control over component choices. Component prices in the UAE are competitive with global markets.
+
+## Recommended Builds for 2025
+
+### Budget Build (AED 3,500 – 4,500)
+- **CPU:** AMD Ryzen 5 7600X – AED 799
+- **GPU:** NVIDIA RTX 4060 – AED 1,399
+- **Motherboard:** MSI MAG B650 Tomahawk – AED 649
+- **RAM:** 32GB DDR5 5600MHz – AED 349
+- **Storage:** 1TB NVMe SSD – AED 249
+- **PSU:** Corsair RM750e 750W – AED 349
+- **Case:** NZXT H510 – AED 349
+
+Target: 1080p gaming at Ultra settings, 100+ FPS.
+
+### Mid-Range Build (AED 6,500 – 8,000)
+- **CPU:** Intel Core i7-14700K – AED 1,499
+- **GPU:** NVIDIA RTX 4070 Super – AED 2,399
+- **Motherboard:** ASUS ROG Strix Z790-E – AED 1,299
+- **RAM:** 32GB DDR5 6000MHz – AED 499
+- **Storage:** 2TB NVMe SSD – AED 349
+- **PSU:** Corsair RM850x 850W – AED 499
+- **Case:** Lian Li PC-O11 Dynamic – AED 599
+
+Target: 1440p gaming at Ultra settings, 144+ FPS.
+
+### High-End Build (AED 12,000+)
+- **CPU:** AMD Ryzen 9 9900X – AED 2,499
+- **GPU:** NVIDIA RTX 4090 – AED 5,999
+- **Motherboard:** ASUS ROG Crosshair X870E – AED 2,199
+
+Target: 4K gaming at Ultra, content creation, VR.
+
+## Tips for Buying PC Parts in the UAE
+
+1. **Buy from authorised retailers**: Grey imports may lack UAE warranty and support
+2. **Check regional PSU standards**: UAE uses Type G (UK-style) plugs — verify adapter compatibility
+3. **GPU stock**: RTX 4090 and RX 7900 XTX often have limited stock — order in advance
+4. **Bundle deals**: QuickCart frequently offers CPU + Motherboard bundles with extra savings
+
+## Building vs Pre-Built in UAE
+
+Pre-built gaming PCs from brands like ASUS ROG, Alienware, and HP OMEN offer the convenience of a single purchase and warranty. If you're not comfortable with the build process, a pre-built from QuickCart UAE is a safe choice.
+
+Shop gaming components at www.quickcartstore.ae with fast delivery across the UAE.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-3",
+      slug: "best-monitors-dubai-uae-2025",
+      title: "Best Monitors for UAE Buyers in 2025: Gaming, Design & Office",
+      excerpt: "The top monitors available in Dubai and the UAE covering 4K, ultrawide, gaming, and professional creative displays — all with official UAE warranty.",
+      tags: ["monitors", "gaming monitor", "4K", "ultrawide", "Dubai", "design"],
+      author: "QuickCart Team",
+      content: `## Monitor Buying Guide for the UAE
+
+Display technology moves fast. Whether you're setting up a home office in Dubai, a creative studio in Abu Dhabi, or a gaming setup anywhere in the UAE, choosing the right monitor makes a huge difference.
+
+## Top Monitor Picks for 2025
+
+### Best Gaming Monitor: LG UltraGear 27GP850-B
+A 27-inch IPS panel with 165Hz refresh rate and 1ms response time makes this the top gaming monitor for competitive players in the UAE.
+
+**Key specs:** 2560x1440, IPS, 165Hz, AMD FreeSync Premium Pro, HDMI 2.0
+
+**Price in UAE:** AED 1,099
+
+### Best 4K Monitor: Samsung Odyssey Neo G7 32"
+Samsung's Neo G7 combines a stunning 4K Mini-LED panel with a 165Hz gaming refresh rate. The 1000R curve creates an immersive experience for both gaming and cinematic content.
+
+**Price in UAE:** AED 2,999
+
+### Best for Creative Work: BenQ SW321C 32"
+Designed for photographers and video editors, the SW321C covers 99% Adobe RGB and 95% DCI-P3. It ships with a Pantone-validated colour calibration report — essential for print and media work in the UAE's creative industry.
+
+**Price in UAE:** AED 5,499
+
+### Best Office Monitor: Dell UltraSharp U2722D
+The gold standard for professional office use. 27-inch 4K IPS panel, USB-C with 90W charging, and USB hub built in. Ideal for Dubai business users working from multiple devices.
+
+**Price in UAE:** AED 1,799
+
+### Best Ultrawide: LG 34WP85C-B 34" Curved
+A 34-inch 3440x1440 ultrawide for productivity power users. USB-C 96W, Thunderbolt 4 pass-through, and an ergonomic curved IPS panel. Split-screen workflows become effortless.
+
+**Price in UAE:** AED 2,199
+
+## What Matters Most in UAE Conditions
+
+- **Brightness**: Dubai's bright environments mean 400+ nits for office windows
+- **Anti-glare**: Matte coatings are preferred over glossy in UAE offices
+- **Cooling**: Monitors in hot UAE summers benefit from good ventilation and stand ergonomics
+
+Shop all monitors at www.quickcartstore.ae with free delivery across the UAE.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-4",
+      slug: "networking-equipment-guide-uae",
+      title: "Best Networking Equipment for UAE Homes & Offices in 2025",
+      excerpt: "From Wi-Fi 6E routers to managed switches for Dubai offices, here's everything you need for a fast, reliable network in the UAE.",
+      tags: ["networking", "Wi-Fi 6E", "router", "switch", "Dubai", "office network"],
+      author: "QuickCart Team",
+      content: `## Why Networking Matters More in the UAE
+
+With Etisalat (e&) and du offering fibre plans up to 10Gbps in the UAE, your home or office network hardware can become the bottleneck. Upgrading to modern Wi-Fi 6E or even Wi-Fi 7 routers unlocks the full potential of your internet connection.
+
+## Best Routers for UAE Homes
+
+### ASUS ZenWiFi Pro ET12 (Wi-Fi 6E Mesh)
+The top mesh system for large UAE villas. Tri-band Wi-Fi 6E covers up to 5,400 sq ft per node. Smart Connect automatically places devices on the optimal band.
+
+**Price in UAE:** AED 2,499 (2-pack)
+
+### TP-Link Archer AXE300 (Wi-Fi 6E)
+Budget-friendly Wi-Fi 6E for apartments and smaller homes in Dubai. Quad-band with OFDMA for efficient multi-device performance.
+
+**Price in UAE:** AED 899
+
+### ASUS RT-AX88U Pro (Wi-Fi 6)
+The workhorse router for UAE power users. 8 LAN ports, 2.5G WAN, and robust QoS for working from home while streaming.
+
+**Price in UAE:** AED 1,199
+
+## Best Networking Equipment for UAE Offices
+
+### Cisco SG350-28 Managed Switch
+Cisco's managed switches are the standard in UAE enterprise environments. The SG350-28 provides 24 Gigabit ports with full VLAN support for structured office cabling.
+
+**Price in UAE:** AED 1,799
+
+### Ubiquiti UniFi AP U6 Pro (Wi-Fi 6)
+Preferred by Dubai IT departments, the UniFi AP U6 Pro supports 300+ concurrent clients and centralised management through the UniFi console. Perfect for open offices.
+
+**Price in UAE:** AED 799 per AP
+
+### D-Link DGS-1210-28P PoE+ Smart Switch
+Power IP cameras, APs, and VoIP phones through a single PoE+ switch — ideal for UAE smart building deployments.
+
+**Price in UAE:** AED 1,299
+
+## UAE-Specific Networking Considerations
+
+- **ISP compatibility**: Check if your router supports GPON or EPON for Etisalat/du fibre
+- **Outdoor Wi-Fi**: UAE heat requires outdoor APs rated for 50°C+ operation
+- **VoIP QoS**: UAE businesses should prioritise voice traffic for Microsoft Teams and Zoom quality
+
+Shop networking equipment at www.quickcartstore.ae with free delivery across Dubai and the UAE.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-5",
+      slug: "laptop-price-comparison-uae-vs-global",
+      title: "Are Laptops Cheaper in the UAE? Dubai Prices vs Global Markets 2025",
+      excerpt: "A data-driven comparison of laptop prices in Dubai, the UK, USA, and India. Find out if buying locally or importing makes more sense for UAE residents.",
+      tags: ["laptop price", "Dubai", "UAE", "price comparison", "import", "buying guide"],
+      author: "QuickCart Team",
+      content: `## The Short Answer
+
+For most mainstream laptops, UAE prices are competitive with global markets — and for Apple products, the UAE is often cheaper than Europe due to lower VAT (5% vs up to 23%).
+
+## Price Comparison: Major Laptops in 2025
+
+### MacBook Pro 14" (M4 Pro, 24GB RAM)
+
+| Market | Price (AED equiv.) |
+|--------|--------------------|
+| UAE    | AED 8,999          |
+| USA    | AED 9,200          |
+| UK     | AED 10,400         |
+| India  | AED 11,100         |
+
+**Verdict:** UAE is the cheapest for MacBook Pro — by a significant margin vs UK and India.
+
+### Dell XPS 15 (Intel Core Ultra 7)
+
+| Market | Price (AED equiv.) |
+|--------|--------------------|
+| UAE    | AED 7,499          |
+| USA    | AED 7,100          |
+| UK     | AED 8,200          |
+
+**Verdict:** USA is slightly cheaper for Dell, but the UAE price includes 1-year local warranty — important for support.
+
+### ASUS ROG Zephyrus G14
+
+| Market | Price (AED equiv.) |
+|--------|--------------------|
+| UAE    | AED 6,499          |
+| USA    | AED 6,200          |
+| Europe | AED 7,800          |
+
+**Verdict:** UAE and USA are comparable for ASUS gaming laptops.
+
+## When Importing Makes Sense
+
+- If a specific model is not available in the UAE
+- For older/discontinued models available on US Amazon
+- When the price difference exceeds AED 500 (covers import duties + risk)
+
+## Risks of Importing Laptops to UAE
+
+1. **No local warranty**: Grey imports are not covered by UAE service centres
+2. **Keyboard layout**: US/UK keyboards do not have Arabic secondary legends
+3. **Power adapter**: Check if the included adapter works on 220-240V
+4. **Customs**: UAE customs charges 5% VAT + 5% customs duty on imports above AED 1,000
+
+## Our Recommendation
+
+For most UAE residents, buying locally from an authorised retailer like QuickCart (www.quickcartstore.ae) provides peace of mind, local support, and compatible accessories. The small price premium is justified.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-6",
+      slug: "best-gaming-accessories-dubai-2025",
+      title: "Top Gaming Accessories in Dubai 2025: Keyboards, Mice & Headsets",
+      excerpt: "The best gaming keyboards, mice, headsets, and controllers available in the UAE — reviewed for performance, value, and compatibility with UAE power standards.",
+      tags: ["gaming accessories", "keyboard", "mouse", "headset", "Dubai", "gaming"],
+      author: "QuickCart Team",
+      content: `## Gaming Peripherals for UAE Gamers
+
+The UAE gaming community has grown massively, with esports tournaments in Dubai and Abu Dhabi drawing professional players. Whether you're a casual gamer or a competitive player, the right peripherals make a measurable difference.
+
+## Best Gaming Keyboards in UAE
+
+### Logitech G915 TKL Wireless
+The G915 TKL is the premium wireless gaming keyboard loved by UAE pro gamers. Low-profile switches, 40-hour battery, and a 1ms LIGHTSPEED wireless connection. No latency compared to wired keyboards.
+
+**Price in UAE:** AED 699
+
+### SteelSeries Apex Pro TKL (2024)
+With adjustable actuation magnetic switches, the Apex Pro TKL lets you tune each key's sensitivity — ideal for competitive FPS players.
+
+**Price in UAE:** AED 799
+
+### Keychron Q5 Max (Wireless Mechanical)
+For gamers who want mechanical feel with premium build quality, the Keychron Q5 Max offers aluminium construction and hot-swappable switches.
+
+**Price in UAE:** AED 649
+
+## Best Gaming Mice in UAE
+
+### Logitech G Pro X Superlight 2
+At just 60g, the Superlight 2 is the choice of professional esports players worldwide. HERO 2 sensor, LIGHTSPEED wireless, and 95+ hours battery life.
+
+**Price in UAE:** AED 449
+
+### Razer DeathAdder V3
+Ergonomic shape, Focus Pro optical sensor, and 90-hour battery. The DeathAdder V3 is ideal for UAE gamers with larger hands who play FPS titles.
+
+**Price in UAE:** AED 349
+
+## Best Gaming Headsets in UAE
+
+### HyperX Cloud III Wireless
+53mm angled drivers with DTS Headphone:X Spatial Audio and an industry-leading 120-hour battery. The best wireless headset for long gaming sessions.
+
+**Price in UAE:** AED 699
+
+### Sony WH-1000XM5 (Gaming Alternative)
+Though marketed as a premium audio headset, the WH-1000XM5 doubles as a gaming headset with excellent ANC for noisy UAE environments.
+
+**Price in UAE:** AED 1,399
+
+## Setup Tips for UAE Gamers
+
+- **Surge protection**: UAE power supply spikes are common — invest in a quality surge protector
+- **USB hubs**: For apartments with limited outlets, a powered USB hub keeps all peripherals connected
+- **Mouse pads**: Large desk pads from SteelSeries and Logitech available at QuickCart
+
+Shop gaming accessories at www.quickcartstore.ae with fast delivery across Dubai and the UAE.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-7",
+      slug: "ssd-vs-hdd-storage-guide-uae",
+      title: "SSD vs HDD: Which Storage Should You Buy in UAE 2025?",
+      excerpt: "A clear breakdown of SSD vs HDD performance, prices, and use cases for UAE buyers. Includes the best storage options available with UAE warranty.",
+      tags: ["storage", "SSD", "HDD", "NVMe", "Dubai", "buying guide"],
+      author: "QuickCart Team",
+      content: `## The Storage Decision in 2025
+
+In 2025, the choice is no longer really SSD vs HDD — it's which type of SSD fits your needs. HDDs have their place, but for primary system storage, SSDs are the clear winner.
+
+## SSD Types Available in UAE
+
+### NVMe PCIe 5.0 (Fastest)
+The latest generation, available in premium builds. Samsung 990 Pro and WD Black SN850X offer read speeds up to 7,450 MB/s. Ideal for video editing workstations and high-end gaming PCs in Dubai.
+
+**Price in UAE:** AED 349 (1TB) – AED 699 (2TB)
+
+### NVMe PCIe 4.0 (Best Value)
+The sweet spot for most UAE users. Samsung 980 Pro, WD Black SN770, and Seagate FireCuda 530 all offer excellent performance at competitive prices.
+
+**Price in UAE:** AED 199 (1TB) – AED 349 (2TB)
+
+### SATA SSD (Budget Pick)
+For older laptops and desktops that don't support NVMe, Samsung 870 EVO and Crucial MX500 provide a massive speed boost over HDD at an accessible price.
+
+**Price in UAE:** AED 149 (500GB) – AED 249 (1TB)
+
+## When HDDs Still Make Sense
+
+- **Bulk storage**: 4TB-18TB HDDs for NAS devices and backup servers
+- **CCTV footage**: Security camera recording in UAE homes and offices
+- **Media archives**: Long-term storage of photos, videos, and documents
+
+Seagate Ironwolf (NAS) and WD Red Plus (NAS) are popular in UAE for home NAS setups.
+
+**Price in UAE:** AED 299 (2TB) – AED 1,299 (8TB)
+
+## Storage Recommendations by Use Case
+
+| Use Case | Recommended Storage |
+|----------|---------------------|
+| Office laptop | 512GB NVMe PCIe 4.0 |
+| Gaming PC | 1TB NVMe PCIe 4.0 + 2TB HDD |
+| Video editing | 2TB NVMe PCIe 5.0 + 4TB HDD |
+| Home NAS | 2x 4TB WD Red Plus |
+| Photography | 2TB Samsung 870 EVO (portable) |
+
+## Where to Buy Storage in Dubai
+
+All major brands — Samsung, WD, Seagate, Kingston, and Crucial — are available with UAE warranty at QuickCart (www.quickcartstore.ae). Same-day delivery available in Dubai for orders placed before 2 PM.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-8",
+      slug: "work-from-home-setup-dubai-guide",
+      title: "The Ultimate Work-From-Home Setup Guide for Dubai Residents 2025",
+      excerpt: "Build the perfect WFH office in your Dubai home or apartment. Monitor, ergonomic chair, webcam, laptop stand, and networking — everything recommended for UAE conditions.",
+      tags: ["work from home", "home office", "Dubai", "ergonomic", "webcam", "setup"],
+      author: "QuickCart Team",
+      content: `## WFH Culture in the UAE
+
+Remote and hybrid work has become standard for many Dubai-based professionals. Whether you're working for a DIFC financial firm, a free zone tech startup, or an international company, a proper home office setup boosts productivity significantly.
+
+## Essential WFH Components
+
+### 1. Monitor
+
+A second screen is the single biggest productivity upgrade for WFH. We recommend:
+- **Dell UltraSharp U2722D** (27" 4K USB-C) – AED 1,799
+- **LG 27UK850-W** (27" 4K with HDR) – AED 1,299
+
+### 2. Ergonomic Chair
+
+Spending 8+ hours in a chair in Dubai's air-conditioned apartments requires proper lumbar support:
+- **Herman Miller Aeron** (available via authorised dealers, Dubai) – AED 6,500+
+- **Secretlab Titan Evo 2025** (gaming ergonomic) – AED 1,899
+
+### 3. Webcam for Video Calls
+
+With Microsoft Teams and Zoom dominating UAE corporate communication:
+- **Logitech Brio 4K** – AED 649
+- **Dell 4K UHD webcam WB7022** – AED 549
+
+Both include AI auto-framing — essential for presentable video calls.
+
+### 4. Noise-Cancelling Headset
+
+Dubai apartments near Sheikh Zayed Road or construction sites benefit greatly from ANC headsets:
+- **Sony WH-1000XM5** – AED 1,399 (best ANC available)
+- **Jabra Evolve2 85** – AED 1,799 (business-grade, Teams certified)
+
+### 5. Laptop Stand + External Keyboard
+
+Laptop stands improve posture and allow use of an external display at eye level:
+- **Twelve South HiRise 3** (aluminium) – AED 349
+- **Logitech MX Keys** (wireless keyboard) – AED 499
+
+### 6. Networking
+
+A reliable router eliminates connectivity excuses in video meetings:
+- **ASUS RT-AX88U Pro** (Wi-Fi 6) – AED 1,199
+
+## Desk Setup for UAE Apartments
+
+UAE apartments often have limited desk space. Consider L-shaped standing desks from IKEA or FlexiSpot (available in Dubai) for maximum ergonomics.
+
+## Total Budget Guide
+
+| Budget | Setup Quality |
+|--------|---------------|
+| AED 2,000 | Basic monitor + keyboard + mouse |
+| AED 5,000 | Good monitor + webcam + headset + stand |
+| AED 10,000+ | Premium dual monitors + chair + all peripherals |
+
+Shop all WFH essentials at www.quickcartstore.ae with free delivery in Dubai.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-9",
+      slug: "printer-buying-guide-uae-2025",
+      title: "Best Printers for UAE Home & Office Use in 2025: A Complete Guide",
+      excerpt: "HP, Canon, Epson, and Brother printers compared for UAE homes, small businesses, and corporate offices — with tips on ink costs, Wi-Fi printing, and UAE compatibility.",
+      tags: ["printers", "HP", "Canon", "Epson", "office", "Dubai", "printing"],
+      author: "QuickCart Team",
+      content: `## Do You Need a Printer in 2025?
+
+Despite a digital-first UAE government, printing remains essential for contracts, visa documents, trade licence paperwork, and educational materials. Here's how to choose the right printer for your situation.
+
+## Best Printers in UAE by Category
+
+### Best Home Printer: HP DeskJet 4155e
+Simple, affordable, and wireless. HP's Instant Ink subscription works in the UAE and keeps running costs low. AirPrint and Wi-Fi direct for iPhone and iPad users.
+
+**Price in UAE:** AED 249
+
+### Best Office All-in-One: HP OfficeJet Pro 9125e
+Prints, scans, copies, and faxes (yes, UAE government still uses fax). Duplex printing, 2-tray capacity, and impressive 24 ppm print speed. HP+ service works in UAE.
+
+**Price in UAE:** AED 899
+
+### Best Laser Printer: Brother HL-L3280CDW
+For UAE small businesses that print frequently, laser beats inkjet on cost-per-page. The HL-L3280CDW is a colour laser printer with automatic duplex and wireless — no ink drying out in UAE heat.
+
+**Price in UAE:** AED 999
+
+### Best Photo Printer: Canon PIXMA G650
+Canon's PIXMA G650 uses a refillable ink tank system — ideal for UAE family homes that print photos frequently. Excellent colour accuracy.
+
+**Price in UAE:** AED 649
+
+### Best A3 Printer: Epson EcoTank ET-16650
+For architects, designers, and businesses in Dubai requiring A3 prints, Epson's EcoTank system dramatically reduces ink costs with refillable tanks.
+
+**Price in UAE:** AED 1,799
+
+## UAE-Specific Printer Considerations
+
+- **Ink availability**: Check that cartridges are available at UAE retailers like Carrefour, LuLu, and QuickCart
+- **Heat sensitivity**: Laser printers perform better in UAE heat than inkjets
+- **Wi-Fi standards**: Ensure Wi-Fi Direct is supported for printing from UAE telecom network phones
+- **Document size**: UAE ID, Emirates ID, and visa documents may require specific paper sizes — verify scanner glass dimensions
+
+## Ink Cost Comparison (Per Page, UAE)
+
+| Printer Type | Cost per Page |
+|--------------|---------------|
+| Inkjet (standard cartridge) | AED 0.25 |
+| Inkjet (EcoTank/Megatank) | AED 0.04 |
+| Colour laser | AED 0.18 |
+| Mono laser | AED 0.05 |
+
+Shop printers at www.quickcartstore.ae with free delivery across the UAE.`,
+      isPublished: true,
+    },
+    {
+      id: "blog-10",
+      slug: "cybersecurity-tips-uae-businesses-2025",
+      title: "Cybersecurity for UAE Businesses in 2025: Essential IT Security Guide",
+      excerpt: "Practical cybersecurity tips for Dubai SMEs and enterprises — covering UAE data protection laws, hardware security, VPNs, and best practices compliant with UAE regulations.",
+      tags: ["cybersecurity", "UAE", "business", "security", "networking", "Dubai", "data protection"],
+      author: "QuickCart Team",
+      content: `## Cybersecurity in the UAE Context
+
+The UAE has a robust legal framework for cybersecurity, including the UAE Cybercrime Law (Federal Decree-Law No. 34 of 2021) and the ADGM Data Protection Regulations for DIFC-registered businesses. Getting your IT security right isn't just best practice — it's a legal requirement.
+
+## Essential Hardware Security for UAE Businesses
+
+### Enterprise-Grade Firewall
+A next-generation firewall (NGFW) is the foundation of any UAE office network. The Fortinet FortiGate and Cisco Meraki MX series are widely deployed in UAE enterprises.
+
+**What to look for:**
+- Deep packet inspection (DPI)
+- VPN support for remote workers
+- UAE telecom compliance (block bypassing will trigger legal issues)
+- Intrusion prevention system (IPS)
+
+### Endpoint Protection Hardware
+Business laptops for UAE employees should include:
+- **TPM 2.0 chip**: Required for Windows 11 BitLocker encryption
+- **Fingerprint reader or IR camera**: For passwordless authentication
+- **Corporate-grade models**: HP EliteBook, Dell Latitude, Lenovo ThinkPad — all support enterprise MDM solutions
+
+### Secure Networking Equipment
+- **Cisco or Juniper managed switches**: Enable 802.1X authentication so only authorised devices connect
+- **Separate guest Wi-Fi**: UAE TDRA regulations require logged access for guest networks in commercial premises
+- **Network Access Control (NAC)**: Prevents unauthorised devices from joining the corporate network
+
+## Software Security Running on UAE IT Hardware
+
+### Password Management
+Deploy an enterprise password manager (1Password Business, Bitwarden Teams) across all devices. Single Sign-On (SSO) with Azure AD is the standard for Dubai enterprise environments.
+
+### Multi-Factor Authentication (MFA)
+UAE banks and government portals use MFA as standard — your business should too. Microsoft Authenticator and Duo Security integrate with all major platforms.
+
+### Encryption
+- **Full disk encryption**: Enable BitLocker (Windows) or FileVault (Mac) on all laptops
+- **Data at rest**: Encrypt sensitive documents with VeraCrypt or enterprise DLP solutions
+- **Email encryption**: Use S/MIME certificates for contracts and sensitive communications
+
+## UAE-Specific Compliance Requirements
+
+1. **TDRA regulations**: Internet usage in commercial settings must be logged
+2. **UAE PDPL**: UAE Personal Data Protection Law requires data minimisation and breach notification
+3. **DIFC PDPR**: Additional requirements for DIFC-registered businesses
+4. **Healthcare**: Dubai Health Authority (DHA) mandates specific security standards for medical data
+
+## Security Hardware Checklist for UAE SMEs
+
+- ☐ Enterprise router/firewall (Fortinet, Cisco)
+- ☐ Managed switch with VLAN support
+- ☐ UPS (uninterruptible power supply) — critical during UAE grid maintenance
+- ☐ Business laptops with TPM 2.0 and biometrics
+- ☐ Separate NAS with daily backups (Synology + external HDD)
+- ☐ Security camera with local NVR (no cloud-only for sensitive premises)
+
+For all the hardware security components your UAE business needs, shop at www.quickcartstore.ae with official warranty and business invoicing available.`,
+      isPublished: true,
+    },
+  ]
+
+  for (const post of blogPosts) {
+    await db.blog.upsert({
+      where: { id: post.id },
+      update: {},
+      create: {
+        id: post.id,
+        slug: post.slug,
+        title: post.title,
+        excerpt: post.excerpt,
+        content: post.content,
+        tags: post.tags,
+        author: post.author,
+        isPublished: post.isPublished,
+        coverImage: null,
+      },
+    })
+  }
+  console.log("✅ 10 blog posts seeded")
+
   console.log("\n🎉 Database seeded successfully!")
-  console.log("\nAdmin login: admin@quickcart.ae / Admin@123")
+  console.log("\nAdmin login: admin@quickcartstore.ae / Admin@123")
   console.log("Customer login: customer@example.com / Customer@123")
 }
 

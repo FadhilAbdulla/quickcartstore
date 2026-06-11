@@ -1,6 +1,6 @@
 import type { Metadata } from "next"
 import { buildMetadata } from "@/lib/seo"
-import { Shield, Truck, Headphones, Award, MapPin, Mail, Phone, Monitor } from "lucide-react"
+import { Shield, Truck, Headphones, Award, MapPin, Mail, Monitor } from "lucide-react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 
@@ -155,11 +155,7 @@ export default function AboutPage() {
               </div>
               <div className="flex items-center gap-3 text-gray-400">
                 <Mail className="h-4 w-4 text-blue-400 shrink-0" />
-                support@quickcart.ae
-              </div>
-              <div className="flex items-center gap-3 text-gray-400">
-                <Phone className="h-4 w-4 text-blue-400 shrink-0" />
-                +971 4 000 0000
+                support@quickcartstore.ae
               </div>
             </div>
             <Button asChild size="lg">

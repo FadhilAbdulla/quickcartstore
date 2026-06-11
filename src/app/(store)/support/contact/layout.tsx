@@ -19,7 +19,6 @@ const contactJsonLd = {
   "@type": "Organization",
   name: SITE.name,
   url: SITE.url,
-  telephone: SITE.phone,
   email: SITE.email,
   address: {
     "@type": "PostalAddress",
@@ -28,7 +27,6 @@ const contactJsonLd = {
   },
   contactPoint: {
     "@type": "ContactPoint",
-    telephone: SITE.phone,
     contactType: "customer service",
     areaServed: "AE",
     availableLanguage: "English",

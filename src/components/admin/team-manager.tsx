@@ -77,7 +77,7 @@ export function TeamManager({ initialTeam, currentUserId }: { initialTeam: Membe
             </div>
             <div className="space-y-1.5">
               <Label>Email *</Label>
-              <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jane@quickcart.ae" />
+              <Input type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} placeholder="jane@quickcartstore.ae" />
             </div>
             <div className="space-y-1.5 sm:col-span-2">
               <Label>Password *</Label>

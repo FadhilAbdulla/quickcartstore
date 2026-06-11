@@ -1,15 +1,14 @@
 import type { Metadata } from "next"
 
 export const SITE = {
-  url: "https://quickcart.ae",
+  url: "https://www.quickcartstore.ae",
   name: "QuickCart UAE",
   locale: "en_AE",
   description:
     "Shop laptops, desktops, gaming PCs, monitors, networking, PC components, printers, storage and more. Authentic products with UAE warranty. Fast delivery across Dubai and UAE.",
   ogImage: "/og-image.png",
   themeColor: "#0066BA",
-  phone: "+971 4 000 0000",
-  email: "support@quickcart.ae",
+  email: "support@quickcartstore.ae",
   address: "Dubai, United Arab Emirates",
 }
 
@@ -72,7 +71,6 @@ export function organizationJsonLd() {
     logo: `${SITE.url}/logo.svg`,
     contactPoint: {
       "@type": "ContactPoint",
-      telephone: SITE.phone,
       contactType: "customer service",
       areaServed: "AE",
       availableLanguage: "English",

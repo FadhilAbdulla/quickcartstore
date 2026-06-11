@@ -1,6 +1,6 @@
 "use client"
 
-import { Mail, Phone, MapPin, Clock, MessageSquare } from "lucide-react"
+import { Mail, MapPin, Clock, MessageSquare } from "lucide-react"
 import { useState } from "react"
 
 export default function ContactPage() {
@@ -22,23 +22,12 @@ export default function ContactPage() {
           <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-6">
             <div className="flex items-center gap-3 mb-3">
               <div className="h-9 w-9 rounded-lg bg-blue-600/20 flex items-center justify-center">
-                <Phone className="h-4 w-4 text-blue-400" />
-              </div>
-              <h2 className="text-white font-semibold">Phone</h2>
-            </div>
-            <p className="text-gray-400 text-sm mb-1">Call or WhatsApp us</p>
-            <a href="tel:+97140000000" className="text-white font-medium hover:text-blue-400 transition-colors">+971 4 000 0000</a>
-          </div>
-
-          <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-6">
-            <div className="flex items-center gap-3 mb-3">
-              <div className="h-9 w-9 rounded-lg bg-blue-600/20 flex items-center justify-center">
                 <Mail className="h-4 w-4 text-blue-400" />
               </div>
               <h2 className="text-white font-semibold">Email</h2>
             </div>
             <p className="text-gray-400 text-sm mb-1">We reply within 24 hours</p>
-            <a href="mailto:support@quickcart.ae" className="text-white font-medium hover:text-blue-400 transition-colors">support@quickcart.ae</a>
+            <a href="mailto:support@quickcartstore.ae" className="text-white font-medium hover:text-blue-400 transition-colors">support@quickcartstore.ae</a>
           </div>
 
           <div className="bg-[#111111] rounded-xl border border-[#1e1e1e] p-6">

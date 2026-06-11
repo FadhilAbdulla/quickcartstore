@@ -93,7 +93,7 @@ export default async function ProductDetailPage({ params }: Props) {
     category: product.category.name,
     offers: {
       "@type": "Offer",
-      url: `https://quickcart.ae/products/${product.slug}`,
+      url: `https://www.quickcartstore.ae/products/${product.slug}`,
       priceCurrency: "AED",
       price: price.toFixed(2),
       ...(comparePrice ? { highPrice: comparePrice.toFixed(2) } : {}),
@@ -103,7 +103,7 @@ export default async function ProductDetailPage({ params }: Props) {
       seller: {
         "@type": "Organization",
         name: "QuickCart UAE",
-        url: "https://quickcart.ae",
+        url: "https://www.quickcartstore.ae",
       },
       areaServed: {
         "@type": "Country",

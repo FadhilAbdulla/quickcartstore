@@ -23,6 +23,7 @@ import {
   MapPin,
   ChevronDown,
   ChevronRight,
+  BookOpen,
 } from "lucide-react"
 import { signOut } from "next-auth/react"
 import { cn } from "@/lib/utils"
@@ -51,6 +52,7 @@ const navGroups: NavGroup[] = [
       { href: "/admin/returns", label: "Returns", icon: RotateCcw },
       { href: "/admin/brands", label: "Brands", icon: Tag },
       { href: "/admin/categories", label: "Categories", icon: FolderOpen },
+      { href: "/admin/blogs", label: "Blog Posts", icon: BookOpen },
     ],
   },
   {

@@ -109,7 +109,7 @@ export default function SignInPage() {
         {/* Demo credentials */}
         <div className="mt-4 p-4 rounded-xl border border-[#1e1e1e] bg-[#0f0f0f] text-xs text-gray-500">
           <p className="font-medium text-gray-400 mb-1">Demo Admin Credentials:</p>
-          <p>Email: admin@quickcart.ae</p>
+          <p>Email: admin@quickcartstore.ae</p>
           <p>Password: Admin@123</p>
         </div>
       </div>

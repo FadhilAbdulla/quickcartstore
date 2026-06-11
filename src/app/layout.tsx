@@ -52,7 +52,7 @@ export const metadata: Metadata = {
     description: "Laptops, gaming rigs, monitors, networking, components and more — authentic, fast delivery across UAE.",
   },
   robots: { index: true, follow: true },
-  metadataBase: new URL("https://quickcart.ae"),
+  metadataBase: new URL("https://www.quickcartstore.ae"),
 }
 
 export default async function RootLayout({

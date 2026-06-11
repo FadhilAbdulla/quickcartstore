@@ -169,7 +169,7 @@ export default async function Image({ params }: { params: Promise<{ slug: string
             <span style={{ color: "rgba(255,255,255,0.8)", fontSize: 16, fontWeight: 600 }}>
               QuickCart UAE
             </span>
-            <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 14 }}>· quickcart.ae</span>
+            <span style={{ color: "rgba(255,255,255,0.35)", fontSize: 14 }}>· quickcartstore.ae</span>
           </div>
         </div>
 

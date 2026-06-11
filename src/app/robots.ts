@@ -18,7 +18,7 @@ export default function robots(): MetadataRoute.Robots {
         ],
       },
     ],
-    sitemap: "https://quickcart.ae/sitemap.xml",
-    host: "https://quickcart.ae",
+    sitemap: "https://www.quickcartstore.ae/sitemap.xml",
+    host: "https://www.quickcartstore.ae",
   }
 }
